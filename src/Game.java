@@ -86,7 +86,7 @@ public class Game {
         }
     } //Builder
 
-    public Game(Builder builder){
+    private Game(Builder builder){
 
         this.nPlayers = builder.nPlayers;
         this.nColumns = builder.nColumns;
@@ -100,6 +100,23 @@ public class Game {
         this.bonusSquare = builder.bonusSquare;
         this.chanceSquare = builder.chanceSquare;
         this.otherCards = builder.otherCards;
+    }
+
+    public void startGame(){
+        boolean terminated = false;
+        while(!terminated){
+            Player player = getCurrentPlayer();
+            int number = dice.roll();
+            int newPosition = player.advanceOf(number);
+            if(newPosition == numSquares){
+                terminated = true;
+                print('Player ' + player.getNickname() + " won!");
+            }
+            else {
+                Square square = getSquareFromNumber(newPosition);
+                square.effect(player);
+            }
+        }
     }
 
 }
