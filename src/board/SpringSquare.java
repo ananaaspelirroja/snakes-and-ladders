@@ -30,6 +30,6 @@ public class SpringSquare extends AbstractSquare {
     @Override
     public void applyEffect(Game game, Player player) {
         game.turn(player.lastDiceRoll(), player);
-        System.out.println("Player " + player.getNickname() + " got on a chance square! The dice are rolling again! \n");
+        System.out.println("Player " + player.getNickname() + " got on a spring square! You are advancing again! \n");
     }
 }
