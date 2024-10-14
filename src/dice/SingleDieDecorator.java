@@ -1,6 +1,6 @@
 package dice;
 
-import components.Board;
+import board.Board;
 
 class SingleDieDecorator extends DiceDecorator {
 

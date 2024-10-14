@@ -1,4 +1,7 @@
-import squares.Square;
+package components;
+
+import board.Board;
+import board.Square;
 
 import java.util.LinkedList;
 
@@ -9,10 +12,12 @@ public class Player {
     private int turnsToWait = 0;
     private boolean hasANoStoppingCard = false;
     private LinkedList<Square> squaresCrossed = new LinkedList<>();
+    private Board board;
 
-    public Player(int id, String nickname) {
+    public Player(int id, String nickname, Board board) {
         this.id = id;
         this.nickname = nickname;
+        this.board = board;
     }
 
     public int getId() {
@@ -59,13 +64,14 @@ public class Player {
         if(squaresCrossed.isEmpty()){
             return 0;
         }
-        else{
-            return squaresCrossed.getLast().getNumber();
-        }
+        return squaresCrossed.getLast().getNumber();
     }
 
     public int advanceOf(int number) {
         int currentPosition = this.getCurrentPosition();
-
+        int newPosition = currentPosition + number;
+        Square currentSquare = board.getSquareFromNumber(newPosition);
+        squaresCrossed.addLast(currentSquare);
+        return newPosition;
     }
 }
