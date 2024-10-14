@@ -1,23 +1,19 @@
+import components.Board;
+import dice.Dice;
+
 import java.util.LinkedList;
 
 public class Game {
 
     private final int nPlayers;
-    private final int nColumns;
-    private final int nRows;
-    private final int nLadders;
-    private final int nSnakes;
     private final int nDice;
-    private final boolean throwSingleDice;
+    private final boolean throwSingleDiceAtTheEnd;
     private final boolean doubleSix;
-    private final boolean restSquares;
-    private final boolean bonusSquare;
-    private final boolean chanceSquare;
     private final boolean otherCards;
 
     private LinkedList<Player> players = new LinkedList<>();
-    private Dice dice = new Dice();
-    private Board board = new Board();
+    private Dice dice;
+    private Board board;
 
 
     public static class Builder {
@@ -91,16 +87,9 @@ public class Game {
     private Game(Builder builder){
 
         this.nPlayers = builder.nPlayers;
-        this.nColumns = builder.nColumns;
-        this.nRows = builder.nRows;
-        this.nLadders = builder.nLadders;
-        this.nSnakes = builder.nSnakes;
         this.nDice = builder.nDice;
-        this.throwSingleDice = builder.throwSingleDice;
+        this.throwSingleDiceAtTheEnd = builder.throwSingleDice;
         this.doubleSix = builder.doubleSix;
-        this.restSquares = builder.restSquares;
-        this.bonusSquare = builder.bonusSquare;
-        this.chanceSquare = builder.chanceSquare;
         this.otherCards = builder.otherCards;
     }
 
@@ -116,7 +105,8 @@ public class Game {
         boolean terminated = false;
         while(!terminated){
             Player player = getCurrentPlayer();
-            int number = dice.roll();
+            int currentPosition = player.getCurrentPosition();
+            int number = dice.roll(currentPosition);
             int newPosition = player.advanceOf(number);
             if(newPosition == board.getNumSquares()){
                 terminated = true;
