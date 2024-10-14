@@ -16,6 +16,8 @@ public class Game {
     private final boolean otherCards;
 
     private LinkedList<Player> players = new LinkedList<>();
+    private Dice dice = new Dice();
+    private Board board = new Board();
 
 
     public static class Builder {
@@ -102,21 +104,33 @@ public class Game {
         this.otherCards = builder.otherCards;
     }
 
-    public void startGame(){
+    public void initialise(LinkedList<String> nicknames){ //creare i player e il tabellone
+        for(int i = 0; i < nicknames.size(); i++){
+            Player player = new Player((i+1), nicknames.get(i));
+            players.addLast(player);
+        }
+
+    }
+
+    public void start(){
         boolean terminated = false;
         while(!terminated){
             Player player = getCurrentPlayer();
             int number = dice.roll();
             int newPosition = player.advanceOf(number);
-            if(newPosition == numSquares){
+            if(newPosition == board.getNumSquares()){
                 terminated = true;
-                print('Player ' + player.getNickname() + " won!");
+                System.out.println('Player ' + player.getNickname() + " won!");
             }
             else {
                 Square square = getSquareFromNumber(newPosition);
-                square.effect(player);
+                square.getEffect(player);
             }
         }
+    }
+
+    private Player getCurrentPlayer(){
+
     }
 
 }
