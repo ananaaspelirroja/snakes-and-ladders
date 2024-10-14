@@ -12,6 +12,7 @@ public class Player {
     private int turnsToWait = 0;
     private boolean hasANoStoppingCard = false;
     private LinkedList<Square> squaresCrossed = new LinkedList<>();
+    private LinkedList<Integer> diceRolls = new LinkedList<>();
     private Board board;
 
     public Player(int id, String nickname, Board board) {
@@ -44,6 +45,8 @@ public class Player {
         this.turnsToWait = turnsToWait;
     }
 
+    public boolean hasTurnsToWait(){return turnsToWait > 0;}
+
     public boolean getHasANoStoppingCard() {
         return hasANoStoppingCard;
     }
@@ -60,6 +63,18 @@ public class Player {
         this.squaresCrossed = squaresCrossed;
     }
 
+    public LinkedList<Integer> getDiceRolls() {
+        return diceRolls;
+    }
+
+    public int lastDiceRoll(){
+        return this.diceRolls.getLast();
+    }
+
+    public void setDiceRolls(LinkedList<Integer> diceRolls) {
+        this.diceRolls = diceRolls;
+    }
+
     public int getCurrentPosition(){
         if(squaresCrossed.isEmpty()){
             return 0;
@@ -74,4 +89,8 @@ public class Player {
         squaresCrossed.addLast(currentSquare);
         return newPosition;
     }
+    
+    public void setCurrentPosition(Square destination){
+        squaresCrossed.addLast(destination);
+    } //for snakes and ladders
 }

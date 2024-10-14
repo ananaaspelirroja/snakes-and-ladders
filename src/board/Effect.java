@@ -1,8 +1,10 @@
 package board;
 
+import Game.Game;
 import components.Player;
 
 public interface Effect {
 
-    public void applyEffect(Player player);
+    void applyEffect(Game game, Player player);
+
 }

@@ -1,8 +1,6 @@
 package board;
 
 
-
-
 public interface Square extends Effect{
 
     int getNumber();
