@@ -54,4 +54,8 @@ public class Deck {
             System.out.println("Il mazzo è vuoto.");
         }
     }
+
+    public boolean getNoStoppingCard() {
+        return noStoppingCard;
+    }
 }
