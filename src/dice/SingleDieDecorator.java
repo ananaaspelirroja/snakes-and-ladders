@@ -2,7 +2,7 @@ package dice;
 
 import board.Board;
 
-class SingleDieDecorator extends DiceDecorator {
+public class SingleDieDecorator extends DiceDecorator {
 
     private final int lowerBound;
     private final int upperBound;

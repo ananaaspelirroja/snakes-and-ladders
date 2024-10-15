@@ -29,16 +29,30 @@ public class Board {
     private static int getRandomEmptySquare(Board board) {
         Random rand = new Random();
         int position;
+        int attempts = 0;
+        int maxAttempts = board.getNumSquares(); // Limitiamo il numero di tentativi
+        System.out.println("Numero massimo di tentativi per trovare una casella vuota: " + maxAttempts);
         do {
-            position = rand.nextInt(board.getNumSquares() -1 ) + 1;  // Ottieni una posizione casuale tra 1 e il numero massimo di caselle -1
+            position = rand.nextInt(board.getNumSquares()) + 1;  // Ottieni una posizione casuale tra 1 e il numero massimo di caselle
+            attempts++;
+            if (attempts > maxAttempts) {
+                throw new IllegalStateException("Impossibile trovare una casella vuota dopo " + maxAttempts + " tentativi.");
+            }
+            System.out.println("Tentativo " + attempts + ": casella " + position);
         } while (!isSuitable(board, position)); // Ripeti finché trovi una casella con effetto DoNothingEffect (cioè una casella vuota)
+        System.out.println("Trovata casella vuota alla posizione: " + position);
         return position;
     }
 
-    private static boolean isSuitable(Board board, int position){
-        Square square = board.grid.get(position);
-        return ((square.getEffect() instanceof DoNothingEffect) && (!square.isADestination));
+    private static boolean isSuitable(Board board, int position) {
+        Square square = board.getSquareFromNumber(position);  // Accedi a square tramite il metodo getter
+        // Verifica se la casella ha l'effetto DoNothingEffect e non è destinazione di una scala o serpente
+        boolean isSuitable = (square.getEffect() instanceof DoNothingEffect) && (!square.isADestination());
+        System.out.println("La casella " + position + " è idonea? " + isSuitable);
+        return isSuitable;
     }
+
+
 
     public static class Builder {
 
@@ -106,11 +120,12 @@ public class Board {
             }
 
             // Verifica che il numero di caselle speciali (bonus, rest, draw card) non superi lo spazio disponibile
-            int totalSpecialSquares = nBonusSquares + nRestSquares + nDrawCardSquares;
+            int totalSpecialSquares = nBonusSquares + nRestSquares + nDrawCardSquares + 1; //la casella finale
             int availableSpaces = nRows * nColumns - (nLadders * 2 + nSnakes * 2);
             if (totalSpecialSquares > availableSpaces) {
                 throw new IllegalArgumentException("Il numero di caselle speciali (bonus, rest e draw card) supera lo spazio disponibile.");
             }
+
 
             if (otherCards && (nDrawCardSquares == 0)) {
                 throw new IllegalArgumentException("Cannot enable other cards if there are no DrawACardSquare is false.");
@@ -124,10 +139,21 @@ public class Board {
             // Costruisci la board con caselle normali
             for (int i = 0; i < board.nRows; i++) {
                 for (int j = 0; j < board.nColumns; j++) {
-                    board.grid.put(key, new Square(key, new DoNothingEffect()));
+                    Square square = new Square(key, new DoNothingEffect());
+                    board.grid.put(key, square);
+
+                    if (square.getEffect() != null) {
+                        System.out.println(square.getEffect().toString());  // Stampa l'effetto se non è nullo
+                    } else {
+                        System.out.println("Effetto nullo per la casella: " + key);
+                    }
+
                     key++;
                 }
             }
+
+
+
 
             // Aggiungi scale
             for (int i = 0; i < nLadders; i++) {
@@ -176,12 +202,14 @@ public class Board {
             }
 
             // Aggiungi caselle DrawACardEffect
-            for (int i = 0; i < nDrawCardSquares; i++) {
-                int position = getRandomEmptySquare(board);
-                board.grid.put(position, new Square(position, new DrawACardEffect()));
-            }
+            if(nDrawCardSquares > 0){
+                Deck deck = Deck.getInstance(otherCards);
+                for (int i = 0; i < nDrawCardSquares; i++) {
+                    int position = getRandomEmptySquare(board);
+                    board.grid.put(position, new Square(position, new DrawACardEffect()));
+                }
 
-            Deck deck = Deck.getInstance(otherCards);
+            }
 
             System.out.println("Board created! \n");
             return board;
@@ -207,7 +235,13 @@ public class Board {
         return nColumns * nRows;
     }
 
-    public Square getSquareFromNumber(int newPosition) {
-        return grid.get(newPosition);
+    public Square getSquareFromNumber(int number) {
+        if (grid.containsKey(number)) {
+            return grid.get(number);  // Restituisce la casella corrispondente se esiste
+        } else {
+            System.out.println("Nessuna casella trovata per la posizione: " + number);
+            return null;  // Restituisce null se la casella non esiste
+        }
     }
+
 }
