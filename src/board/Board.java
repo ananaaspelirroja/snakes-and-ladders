@@ -33,7 +33,7 @@ public class Board {
         int maxAttempts = board.getNumSquares(); // Limitiamo il numero di tentativi
         System.out.println("Numero massimo di tentativi per trovare una casella vuota: " + maxAttempts);
         do {
-            position = rand.nextInt(board.getNumSquares()) + 1;  // Ottieni una posizione casuale tra 1 e il numero massimo di caselle
+            position = rand.nextInt(board.getNumSquares() - 1) + 1;  // Ottieni una posizione casuale tra 1 e il numero massimo di caselle
             attempts++;
             if (attempts > maxAttempts) {
                 throw new IllegalStateException("Impossibile trovare una casella vuota dopo " + maxAttempts + " tentativi.");
