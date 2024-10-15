@@ -4,6 +4,8 @@ import board.effects.Effect;
 
 public class Square extends Element {
 
+    protected int number;
+    protected Effect effect;
     protected boolean isADestination = false; //It indicates if it is the tail of a snake or the upper side of a ladder
 
     public Square(int number, Effect effect) {
@@ -13,8 +15,12 @@ public class Square extends Element {
         return isADestination;
     }
 
-    public void setADestination(boolean ADestination) {
+    public void setIsADestination(boolean ADestination) {
         isADestination = ADestination;
+    }
+
+    public Effect getEffect() {
+        return effect;
     }
 
     @Override

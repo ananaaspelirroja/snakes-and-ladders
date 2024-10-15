@@ -13,7 +13,6 @@ public class Game {
     private LinkedList<Player> players = new LinkedList<>();
     private Dice dice;
     private Board board;
-
     private boolean terminated = false;
 
 
