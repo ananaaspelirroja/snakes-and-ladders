@@ -76,21 +76,24 @@ public class Player {
     }
 
     public int getCurrentPosition(){
+        int pos = 0;
         if(squaresCrossed.isEmpty()){
-            return 0;
+            return pos;
+        } else {
+            pos = squaresCrossed.getLast().getNumber();
         }
-        return squaresCrossed.getLast().getNumber();
+        return pos;
     }
 
     public int advanceOf(int number) {
         int currentPosition = this.getCurrentPosition();
         int newPosition = currentPosition + number;
         Square currentSquare = board.getSquareFromNumber(newPosition);
-        squaresCrossed.addLast(currentSquare);
         return newPosition;
     }
     
     public void setCurrentPosition(Square destination){
         squaresCrossed.addLast(destination);
+        System.out.println(squaresCrossed);
     } //for snakes and ladders
 }

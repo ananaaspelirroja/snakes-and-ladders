@@ -13,16 +13,25 @@ public class Deck {
     private boolean noStoppingCard;
 
     // Costruttore privato per il Singleton
-    private Deck(boolean noStoppingCard) {
-        this.noStoppingCard = noStoppingCard;
-        cards = new LinkedList<Card>();
+    // Costruttore privato per impedire l'instanziamento esterno
+    private Deck() {
+        this.noStoppingCard = false;
+        this.cards = new LinkedList<>();
         initializeDeck();
     }
 
-    // Metodo per ottenere l'unica istanza del mazzo con parametro opzionale (lazy initialization)
+    // Metodo per ottenere l'istanza Singleton
+    public static Deck getInstance() {
+        if (instance == null) {
+            instance = new Deck();  // Inizializza l'istanza se non esiste già
+        }
+        return instance;
+    }
+
     public static Deck getInstance(boolean noStoppingCard) {
         if (instance == null) {
-            instance = new Deck(noStoppingCard);
+            instance = new Deck();
+            instance.noStoppingCard = noStoppingCard;  // Imposta il valore della carta NoStopping se passato
         }
         return instance;
     }
@@ -30,9 +39,8 @@ public class Deck {
     // Metodo per simulare l'inizializzazione del mazzo con delle carte
     private void initializeDeck() {
         // Aggiungi solo carte non di sosta se noStoppingCard è true
-        if (!noStoppingCard) {
-            cards.add(new Card(1, new BenchEffect()));  // Carta di sosta
-        }
+
+        cards.add(new Card(1, new BenchEffect()));
         cards.add(new Card(2, new ChanceEffect()));
         cards.add(new Card(3, new GuestEffect()));
         cards.add(new Card(4, new SpringEffect()));

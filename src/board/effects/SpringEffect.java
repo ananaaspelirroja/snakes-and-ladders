@@ -11,4 +11,9 @@ public class SpringEffect implements Effect {
         game.turn(number, player);
         System.out.println("Player " + player.getNickname() + " got on a chance square! The dice are rolling again! \n");
     }
+
+    @Override
+    public String toString() {
+        return "SpringEffect{}";
+    }
 }

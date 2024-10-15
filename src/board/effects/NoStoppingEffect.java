@@ -10,4 +10,9 @@ public class NoStoppingEffect implements Effect {
         player.setHasANoStoppingCard(true);
         System.out.println("Player " + player.getNickname() + " acquires a No Stopping card! \n");
     }
+
+    @Override
+    public String toString() {
+        return "NoStoppingEffect{}";
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -52,12 +52,11 @@ public class Application {
         System.out.print("Inserisci il numero di caselle DrawACardEffect: ");
         int nDrawCardSquares = scanner.nextInt();
         boolean otherCards = false;
-        if(nDrawCardSquares > 0){
+        if (nDrawCardSquares > 0) {
             // Chiedi all'utente se vuole abilitare altre carte (true/false)
             System.out.print("Vuoi abilitare altre carte (true/false)? ");
             otherCards = scanner.nextBoolean();
         }
-
 
 
         // Costruisci la Board utilizzando i parametri inseriti dall'utente
@@ -85,10 +84,11 @@ public class Application {
         System.out.print("Vuoi giocare con 1 o 2 dadi? ");
         int numDice = scanner.nextInt();
 
-        Dice dice;
+        Dice dice = null;
 
         if (numDice == 1) {
             System.out.println("Hai scelto di giocare con 1 dado.");
+            dice = new StandardDice(1);
         } else if (numDice == 2) {
             dice = new StandardDice(2);
             System.out.println("Hai scelto di giocare con 2 dadi.");
@@ -109,6 +109,8 @@ public class Application {
                 dice = new SingleDieDecorator(dice, board);
                 System.out.println("Hai abilitato la modalità 'One Dice At The End'.");
             }
+        }
+
 
             //GAME
             System.out.print("Inserisci il numero di giocatori: ");
@@ -135,4 +137,4 @@ public class Application {
 
 
     }
-}
+
