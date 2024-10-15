@@ -1,5 +1,7 @@
 package board;
 
+import board.effects.DoNothingEffect;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,7 +77,7 @@ public class Board {
             int key = 1; // Inizia dalla casella 1
             for (int i = 0; i < board.nRows; i++) {
                 for (int j = 0; j < board.nColumns; j++) {
-                    board.grid.put(key, new Square()); // Associa la chiave alla casella
+                    board.grid.put(key, new Square(key, new DoNothingEffect())); // Associa la chiave alla casella
                     key++;
                 }
             }
@@ -95,7 +97,11 @@ public class Board {
             this.otherCards = builder.otherCards;
         }
 
-        public int getNumSquares() {
+    public boolean isOtherCards() {
+        return otherCards;
+    }
+
+    public int getNumSquares() {
             return (nColumns * nRows);
         }
         public Square getSquareFromNumber(int newPosition) {

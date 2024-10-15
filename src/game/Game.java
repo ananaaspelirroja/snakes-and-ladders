@@ -1,9 +1,9 @@
-package Game;
+package game;
 
 import board.Board;
+import board.Square;
 import components.Player;
 import dice.Dice;
-import board.Square;
 
 import java.util.LinkedList;
 
