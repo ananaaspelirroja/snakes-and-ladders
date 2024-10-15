@@ -204,6 +204,7 @@ public class Board {
             // Aggiungi caselle DrawACardEffect
             if(nDrawCardSquares > 0){
                 Deck deck = Deck.getInstance(otherCards);
+                System.out.println("Mazzo creato con impostazione " + deck.getNoStoppingCard());
                 for (int i = 0; i < nDrawCardSquares; i++) {
                     int position = getRandomEmptySquare(board);
                     board.grid.put(position, new Square(position, new DrawACardEffect()));

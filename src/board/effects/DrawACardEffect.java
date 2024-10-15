@@ -17,6 +17,7 @@ public class DrawACardEffect implements Effect {
         if (deck == null) {
             deck = Deck.getInstance();  // Ottieni l'istanza Singleton del mazzo
         }
+        System.out.println(deck.getNoStoppingCard());
 
         // Ora il deck è inizializzato, quindi possiamo chiamare i metodi su di esso
         deck.pickACard(game, player);
