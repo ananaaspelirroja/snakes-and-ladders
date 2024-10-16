@@ -1,4 +1,4 @@
-package dice;
+package main.dice;
 
 public interface Dice {
 

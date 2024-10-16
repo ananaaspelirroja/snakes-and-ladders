@@ -1,6 +1,6 @@
-package dice;
+package main.dice;
 
-import board.Board;
+import main.board.Board;
 
 public class SingleDieDecorator extends DiceDecorator {
 

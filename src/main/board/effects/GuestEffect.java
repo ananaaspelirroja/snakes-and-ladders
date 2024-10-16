@@ -1,8 +1,8 @@
-package board.effects;
+package main.board.effects;
 
-import board.Deck;
-import game.Game;
-import components.Player;
+import main.board.Deck;
+import main.game.Game;
+import main.components.Player;
 
 public class GuestEffect implements Effect {
 

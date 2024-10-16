@@ -1,10 +1,15 @@
-import board.Board;
-import board.Square;
-import dice.Dice;
-import dice.SingleDieDecorator;
-import dice.StandardDice;
-import dice.DoubleSixDecorator;
-import game.Game;
+package main;
+
+import main.board.Board;
+import main.board.Square;
+import main.dice.Dice;
+import main.dice.SingleDieDecorator;
+import main.dice.StandardDice;
+import main.dice.DoubleSixDecorator;
+import main.game.AdvanceStrategy;
+import main.game.AutoAdvanceStrategy;
+import main.game.Game;
+import main.game.ManualAdvanceStrategy;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -71,7 +76,7 @@ public class Application {
                 .build();
 
         // Print the total number of squares
-        System.out.println("The board has been built with " + board.getNumSquares() + " squares.");
+        System.out.println("The main.board has been built with " + board.getNumSquares() + " squares.");
 
         // Print a specific square to show an example
         System.out.print("Enter a square number to see the details: ");
@@ -90,7 +95,7 @@ public class Application {
             dice = new StandardDice(1);
         } else if (numDice == 2) {
             dice = new StandardDice(2);
-            System.out.println("You chose to play with 2 dice.");
+            System.out.println("You chose to play with 2 main.dice.");
 
             // Ask if they want to enable "Double Six" mode or "One Dice At The End"
             System.out.print("Do you want to enable 'Double Six' mode (rolling a double six lets you roll again)? (y/n) ");
@@ -111,6 +116,15 @@ public class Application {
         }
 
         // GAME
+        AdvanceStrategy strategy;
+        System.out.print("Do you want manual or auto advance? (m/a) ");
+        String advance = scanner.next();
+        if (advance.equalsIgnoreCase("m")) {
+            strategy = new ManualAdvanceStrategy();
+        } else{
+            strategy = new AutoAdvanceStrategy();
+        }
+
         System.out.print("Enter the number of players: ");
         int nPlayers = scanner.nextInt();
         scanner.nextLine(); // Consume the newline
@@ -123,10 +137,10 @@ public class Application {
             nicknames.add(nickname);
         }
 
-        Game game = new Game(nPlayers, nicknames, dice, board);
+        Game game = new Game(nPlayers, nicknames, dice, board, strategy);
 
-        // Start the game
-        System.out.println("The game begins!");
+        // Start the main.game
+        System.out.println("The main.game begins!");
         game.start();
 
         scanner.close();

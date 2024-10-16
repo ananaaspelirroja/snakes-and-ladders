@@ -1,4 +1,4 @@
-package dice;
+package main.dice;
 
 public class StandardDice implements Dice{
     private int numDice;

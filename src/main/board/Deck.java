@@ -1,11 +1,11 @@
-package board;
+package main.board;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-import board.effects.*;
-import components.Player;
-import game.Game;
+import main.board.effects.*;
+import main.components.Player;
+import main.game.Game;
 
 public class Deck {
     private static Deck instance; // Singleton instance

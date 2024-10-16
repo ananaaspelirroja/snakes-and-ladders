@@ -1,4 +1,4 @@
-package dice;
+package main.dice;
 
 public class DoubleSixDecorator extends DiceDecorator {
     public DoubleSixDecorator(Dice dice){

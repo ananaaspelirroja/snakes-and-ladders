@@ -1,9 +1,9 @@
-package game;
+package main.game;
 
-import board.Board;
-import board.Square;
-import components.Player;
-import dice.Dice;
+import main.board.Board;
+import main.board.Square;
+import main.components.Player;
+import main.dice.Dice;
 
 import java.util.LinkedList;
 
@@ -14,8 +14,9 @@ public class Game {
     private Dice dice;
     private Board board;
     private boolean terminated = false;
+    private AdvanceStrategy strategy;
 
-    public Game(int nPlayers, LinkedList<String> nicknames, Dice dice, Board board) {
+    public Game(int nPlayers, LinkedList<String> nicknames, Dice dice, Board board, AdvanceStrategy strategy) {
         this.board = board;
         this.nPlayers = nPlayers;
         for (int i = 0; i < nicknames.size(); i++) {
@@ -23,14 +24,21 @@ public class Game {
             players.addLast(player);
         }
         this.dice = dice;
+        this.strategy = strategy;
     }
 
+    public void start() throws InterruptedException {
+        while (!terminated) {
+            strategy.advance(this);
+        }
+    }
+/*
     public void start() throws InterruptedException {
         while (!terminated) {
             Player player = getCurrentPlayer();  // Get the current player
             int currentPosition = player.getCurrentPosition();
             if (!player.hasTurnsToWait()) {  // Play only if the player does not have to wait
-                int number = dice.roll(currentPosition);  // Roll the dice
+                int number = dice.roll(currentPosition);  // Roll the main.dice
                 turn(number, player);  // Execute the turn
             }
             System.out.println(player.getSquaresCrossed());
@@ -42,8 +50,10 @@ public class Game {
             players.addLast(players.removeFirst());
         }
     }
+    */
 
-    private Player getCurrentPlayer() throws InterruptedException {
+
+    Player getCurrentPlayer() throws InterruptedException {
         Player player = players.getFirst();  // Get the first player
         while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
@@ -84,5 +94,13 @@ public class Game {
 
     public Dice getDice() {
         return this.dice;
+    }
+
+    public void terminate() {
+        this.terminated = true;
+    }
+
+    public void movePlayerToEnd() {
+        players.addLast(players.removeFirst());
     }
 }

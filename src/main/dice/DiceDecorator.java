@@ -1,4 +1,4 @@
-package dice;
+package main.dice;
 
 public abstract class DiceDecorator implements Dice {
     protected Dice dice;

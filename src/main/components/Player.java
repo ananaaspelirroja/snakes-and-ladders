@@ -1,7 +1,7 @@
-package components;
+package main.components;
 
-import board.Board;
-import board.Square;
+import main.board.Board;
+import main.board.Square;
 
 import java.util.LinkedList;
 

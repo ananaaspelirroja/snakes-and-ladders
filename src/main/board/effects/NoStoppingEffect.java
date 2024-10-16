@@ -1,8 +1,8 @@
-package board.effects;
+package main.board.effects;
 
 
-import components.Player;
-import game.Game;
+import main.components.Player;
+import main.game.Game;
 
 public class NoStoppingEffect implements Effect {
     @Override

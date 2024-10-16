@@ -1,8 +1,8 @@
-package board;
+package main.board;
 
-import board.effects.Effect;
-import components.Player;
-import game.Game;
+import main.board.effects.Effect;
+import main.components.Player;
+import main.game.Game;
 
 public abstract class Element {
 

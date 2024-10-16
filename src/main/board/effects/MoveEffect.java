@@ -1,8 +1,8 @@
-package board.effects;
+package main.board.effects;
 
-import board.Square;
-import game.Game;
-import components.Player;
+import main.board.Square;
+import main.game.Game;
+import main.components.Player;
 
 public class MoveEffect implements Effect {
 

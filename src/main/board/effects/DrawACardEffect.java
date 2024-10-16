@@ -1,8 +1,8 @@
-package board.effects;
+package main.board.effects;
 
-import game.Game;
-import board.Deck;
-import components.Player;
+import main.game.Game;
+import main.board.Deck;
+import main.components.Player;
 
 public class DrawACardEffect implements Effect {
     // We use the Singleton

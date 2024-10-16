@@ -1,7 +1,7 @@
-package board.effects;
+package main.board.effects;
 
-import game.Game;
-import components.Player;
+import main.game.Game;
+import main.components.Player;
 
 public interface Effect {  //Implementor of Bridge pattern
 

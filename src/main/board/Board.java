@@ -1,12 +1,12 @@
-package board;
+package main.board;
 
-import board.effects.DoNothingEffect;
-import board.effects.MoveEffect;
-import board.effects.ChanceEffect;
-import board.effects.SpringEffect;
-import board.effects.GuestEffect;
-import board.effects.BenchEffect;
-import board.effects.DrawACardEffect;
+import main.board.effects.DoNothingEffect;
+import main.board.effects.MoveEffect;
+import main.board.effects.ChanceEffect;
+import main.board.effects.SpringEffect;
+import main.board.effects.GuestEffect;
+import main.board.effects.BenchEffect;
+import main.board.effects.DrawACardEffect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,9 +106,9 @@ public class Board {
         }
 
         public Board build() {
-            // Verify the size of the board
+            // Verify the size of the main.board
             if (nRows * nColumns < 9 || nRows * nColumns > 144) {
-                throw new IllegalArgumentException("The board must have between 9 and 144 squares.");
+                throw new IllegalArgumentException("The main.board must have between 9 and 144 squares.");
             }
 
             // Verify that there is enough space for ladders, snakes, bonus squares, rest squares, and draw card squares
@@ -133,7 +133,7 @@ public class Board {
             board.grid = new HashMap<>();
             int key = 1; // Start from square 1
 
-            // Build the board with regular squares
+            // Build the main.board with regular squares
             for (int i = 0; i < board.nRows; i++) {
                 for (int j = 0; j < board.nColumns; j++) {
                     Square square = new Square(key, new DoNothingEffect());
