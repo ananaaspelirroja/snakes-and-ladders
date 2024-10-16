@@ -9,11 +9,11 @@ import game.Game;
 
 public class Deck {
     private static Deck instance; // Singleton instance
-    private Queue<Card> cards;  // Simulazione delle carte come coda
+    private Queue<Card> cards;  // Simulates cards as a queue
     private boolean noStoppingCard;
 
-    // Costruttore privato per il Singleton
-    // Costruttore privato per impedire l'instanziamento esterno
+    // Private constructor for Singleton
+    // Private constructor to prevent external instantiation
     private Deck(boolean noStoppingCard) {
         this.noStoppingCard = noStoppingCard;
         this.cards = new LinkedList<>();
@@ -22,21 +22,22 @@ public class Deck {
 
     public static Deck getInstance(boolean noStoppingCard) {
         if (instance == null) {
-            instance = new Deck(noStoppingCard);  // Inizializza solo alla prima chiamata
+            instance = new Deck(noStoppingCard);  // Initialize only on the first call
         }
         return instance;
     }
 
-    // Metodo per ottenere l'istanza esistente del Singleton
+    // Method to get the existing Singleton instance
     public static Deck getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("Deck non inizializzato. Chiamare getInstance(boolean noStoppingCard) prima.");
+            throw new IllegalStateException("Deck not initialized. Call getInstance(boolean noStoppingCard) first.");
         }
         return instance;
     }
-    // Metodo per simulare l'inizializzazione del mazzo con delle carte
+
+    // Method to simulate deck initialization with cards
     private void initializeDeck() {
-        // Aggiungi solo carte non di sosta se noStoppingCard è true
+        // Add only non-stopping cards if noStoppingCard is true
 
         cards.add(new Card(1, new BenchEffect()));
         cards.add(new Card(2, new ChanceEffect()));
@@ -46,20 +47,20 @@ public class Deck {
             cards.add(new Card(5, new NoStoppingEffect()));
         }
 
-        System.out.println("Il mazzo è stato creato con le carte iniziali.");
+        System.out.println("The deck has been created with the initial cards.");
     }
 
-    // Metodo per pescare una carta e rimetterla in fondo al mazzo
+    // Method to draw a card and put it back at the bottom of the deck
     public void pickACard(Game game, Player player) {
-        Card card = cards.poll();  // Pesca la prima carta (rimuovendola dalla cima)
+        Card card = cards.poll();  // Draw the first card (removing it from the top)
         if (card != null) {
-            System.out.println("Il giocatore " + player.getNickname() + " ha pescato: " + card);
+            System.out.println("Player " + player.getNickname() + " drew: " + card);
             card.applyEffect(game, player);
             if(!(card.getEffect() instanceof NoStoppingEffect)){
-                cards.add(card);  // Rimetti la carta in fondo al mazzo
+                cards.add(card);  // Put the card back at the bottom of the deck
             }
         } else {
-            System.out.println("Il mazzo è vuoto.");
+            System.out.println("The deck is empty.");
         }
     }
 
@@ -67,8 +68,7 @@ public class Deck {
         return noStoppingCard;
     }
 
-
-    public void addTheStoppingCard() { //add the card after it is used
+    public void addTheStoppingCard() { // Add the card after it is used
         cards.add(new Card(5, new NoStoppingEffect()));
         System.out.println("The stopping card was added to the deck! \n");
     }

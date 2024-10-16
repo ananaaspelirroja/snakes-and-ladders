@@ -25,6 +25,6 @@ public class Square extends Element {
     public String toString() {
         return "Square{" +
                 "number=" + number +
-                '}';
+                "} with effect " + (this.getEffect());
     }
 }

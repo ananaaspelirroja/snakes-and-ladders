@@ -27,34 +27,34 @@ public class Game {
 
     public void start() throws InterruptedException {
         while (!terminated) {
-            Player player = getCurrentPlayer();  // Ottieni il giocatore corrente
+            Player player = getCurrentPlayer();  // Get the current player
             int currentPosition = player.getCurrentPosition();
-            if (!player.hasTurnsToWait()) {  // Gioca solo se il giocatore non deve aspettare
-                int number = dice.roll(currentPosition);  // Tira i dadi
-                turn(number, player);  // Esegui il turno
+            if (!player.hasTurnsToWait()) {  // Play only if the player does not have to wait
+                int number = dice.roll(currentPosition);  // Roll the dice
+                turn(number, player);  // Execute the turn
             }
             System.out.println(player.getSquaresCrossed());
 
-            // Aggiungi un ritardo per visualizzare meglio i messaggi
-            Thread.sleep(2000);  // Pausa di 2 secondi tra i turni
+            // Add a delay to better visualize the messages
+            Thread.sleep(2000);  // 2 seconds pause between turns
 
-            // Sposta il giocatore in fondo alla lista (fine del turno)
+            // Move the player to the end of the list (end of the turn)
             players.addLast(players.removeFirst());
         }
     }
 
     private Player getCurrentPlayer() throws InterruptedException {
-        Player player = players.getFirst();  // Ottieni il primo giocatore
-        while (player.hasTurnsToWait()) {  // Se deve aspettare, diminuisci i turni di attesa
+        Player player = players.getFirst();  // Get the first player
+        while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
-            System.out.println("Player " + player.getNickname() + " deve aspettare ancora " + player.getTurnsToWait() + " turni.");
+            System.out.println("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns.");
 
-            // Aggiungi un ritardo per visualizzare il messaggio
-            Thread.sleep(2000);  // Pausa di 2 secondi per dare tempo di leggere il messaggio
+            // Add a delay to visualize the message
+            Thread.sleep(2000);  // 2 seconds pause to give time to read the message
 
-            // Sposta il giocatore in fondo alla lista per aspettare il turno successivo
+            // Move the player to the end of the list to wait for the next turn
             players.addLast(players.removeFirst());
-            player = players.getFirst();  // Ottieni il prossimo giocatore
+            player = players.getFirst();  // Get the next player
         }
         return player;
     }
@@ -63,21 +63,21 @@ public class Game {
         int newPosition = player.advanceOf(number);
         int totalSquares = board.getNumSquares();
 
-        // Controlla se la nuova posizione supera il numero di caselle
+        // Check if the new position exceeds the number of squares
         if (newPosition > totalSquares) {
-            // Calcola la differenza e fai tornare indietro il giocatore
+            // Calculate the difference and make the player go back
             int excess = newPosition - totalSquares;
             newPosition = totalSquares - excess;
-            System.out.println("Il giocatore " + player.getNickname() + " ha superato la fine! Torna indietro di " + excess + " caselle.");
+            System.out.println("Player " + player.getNickname() + " has exceeded the end! Goes back " + excess + " squares.");
         }
 
         Square square = board.getSquareFromNumber(newPosition);
         player.getSquaresCrossed().addLast(square);
         if (newPosition == totalSquares) {
             this.terminated = true;
-            System.out.println("Player " + player.getNickname() + " ha vinto!");
+            System.out.println("Player " + player.getNickname() + " has won!");
         } else {
-            System.out.println("Player " + player.getNickname() + " è sulla casella numero " + newPosition);
+            System.out.println("Player " + player.getNickname() + " is on square number " + newPosition);
             square.applyEffect(this, player);
         }
     }
@@ -86,4 +86,3 @@ public class Game {
         return this.dice;
     }
 }
-

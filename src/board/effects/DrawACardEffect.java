@@ -5,7 +5,7 @@ import board.Deck;
 import components.Player;
 
 public class DrawACardEffect implements Effect {
-    //usiamo il Singleton
+    // We use the Singleton
     protected Deck deck;
 
     public DrawACardEffect() {
@@ -13,15 +13,15 @@ public class DrawACardEffect implements Effect {
 
     @Override
     public void applyEffect(Game game, Player player) {
-        // Inizializza il deck se non è già stato fatto
+        // Initialize the deck if it hasn't been done yet
         if (deck == null) {
-            deck = Deck.getInstance();  // Ottieni l'istanza Singleton del mazzo
+            deck = Deck.getInstance();  // Get the Singleton instance of the deck
         }
         System.out.println(deck.getNoStoppingCard());
 
-        // Ora il deck è inizializzato, quindi possiamo chiamare i metodi su di esso
+        // Now the deck is initialized, so we can call methods on it
         deck.pickACard(game, player);
-        System.out.println("Il giocatore " + player.getNickname() + " deve pescare una carta! \n");
+        System.out.println("Player " + player.getNickname() + " has to draw a card! \n");
     }
 
     @Override
