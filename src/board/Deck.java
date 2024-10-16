@@ -55,7 +55,9 @@ public class Deck {
         if (card != null) {
             System.out.println("Il giocatore " + player.getNickname() + " ha pescato: " + card);
             card.applyEffect(game, player);
-            cards.add(card);  // Rimetti la carta in fondo al mazzo
+            if(!(card.getEffect() instanceof NoStoppingEffect)){
+                cards.add(card);  // Rimetti la carta in fondo al mazzo
+            }
         } else {
             System.out.println("Il mazzo è vuoto.");
         }
@@ -66,4 +68,8 @@ public class Deck {
     }
 
 
+    public void addTheStoppingCard() { //add the card after it is used
+        cards.add(new Card(5, new NoStoppingEffect()));
+        System.out.println("The stopping card was added to the deck! \n");
+    }
 }

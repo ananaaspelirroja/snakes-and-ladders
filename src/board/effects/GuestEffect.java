@@ -1,5 +1,6 @@
 package board.effects;
 
+import board.Deck;
 import game.Game;
 import components.Player;
 
@@ -13,6 +14,8 @@ public class GuestEffect implements Effect {
     public void applyEffect(Game game, Player player) {
         if (player.getHasANoStoppingCard()) {
             System.out.println("Player " + player.getNickname() + " uses a No Stopping card! \n");
+            Deck deck = Deck.getInstance();
+            deck.addTheStoppingCard();
             player.setHasANoStoppingCard(false);
         } else {
             player.setTurnsToWait(TURNS_TO_WAIT);

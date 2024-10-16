@@ -96,4 +96,6 @@ public class Player {
         squaresCrossed.addLast(destination);
         System.out.println(squaresCrossed);
     } //for snakes and ladders
+
+
 }
