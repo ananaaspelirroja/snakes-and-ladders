@@ -11,29 +11,27 @@ public class ManualAdvanceStrategy implements AdvanceStrategy {
     public void advance(Game game) throws InterruptedException {
         Player player = game.getCurrentPlayer();
         if (!player.hasTurnsToWait()) {
-            System.out.println("È il turno di " + player.getNickname() + ". Premi 'r' per lanciare i dadi o 'q' per uscire.");
+            System.out.println("It's " + player.getNickname() + "'s turn. Press 'r' to roll the dice or 'q' to quit. \n");
             String input = scanner.nextLine();
 
             if (input.equalsIgnoreCase("q")) {
-                System.out.println("Uscita dal gioco.");
+                System.out.println("Exiting the game.");
                 game.terminate();
                 return;
             } else if (input.equalsIgnoreCase("r")) {
                 int currentPosition = player.getCurrentPosition();
                 int number = game.getDice().roll(currentPosition);
+                player.addLastDiceRoll(number);
                 game.turn(number, player);
             } else {
-                System.out.println("Comando non valido. Prova di nuovo.");
+                System.out.println("Invalid command. Try again.");
                 return;
             }
         }
 
-
         System.out.println(player.getSquaresCrossed());
 
-
         game.movePlayerToEnd();
-        }
-
     }
 
+}

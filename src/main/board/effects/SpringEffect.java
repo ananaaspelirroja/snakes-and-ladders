@@ -7,9 +7,9 @@ public class SpringEffect implements Effect {
 
     @Override
     public void applyEffect(Game game, Player player) {
-        int number = game.getDice().roll(player.getCurrentPosition());
+        int number = player.lastDiceRoll();
         game.turn(number, player);
-        System.out.println("Player " + player.getNickname() + " got on a chance square! The main.dice are rolling again! \n");
+        System.out.println("Player " + player.getNickname() + " got a real luck! It is moving again of " + number + " squares! \n");
     }
 
     @Override

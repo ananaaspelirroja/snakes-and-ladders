@@ -47,20 +47,20 @@ public class Deck {
             cards.add(new Card(5, new NoStoppingEffect()));
         }
 
-        System.out.println("The deck has been created with the initial cards.");
+        //System.out.println("The deck has been created with the initial cards."); - DEBUG
     }
 
     // Method to draw a card and put it back at the bottom of the deck
     public void pickACard(Game game, Player player) {
         Card card = cards.poll();  // Draw the first card (removing it from the top)
         if (card != null) {
-            System.out.println("Player " + player.getNickname() + " drew: " + card);
+            System.out.println("Player " + player.getNickname() + " drew: " + card + "\n");
             card.applyEffect(game, player);
             if(!(card.getEffect() instanceof NoStoppingEffect)){
                 cards.add(card);  // Put the card back at the bottom of the deck
             }
         } else {
-            System.out.println("The deck is empty.");
+            System.out.println("The deck is empty. \n");
         }
     }
 

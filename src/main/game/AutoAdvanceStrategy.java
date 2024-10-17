@@ -11,6 +11,7 @@ public class AutoAdvanceStrategy implements AdvanceStrategy {
         if (!player.hasTurnsToWait()) {
             int currentPosition = player.getCurrentPosition();
             int number = game.getDice().roll(currentPosition);
+            player.addLastDiceRoll(number);
             game.turn(number, player);
         }
 

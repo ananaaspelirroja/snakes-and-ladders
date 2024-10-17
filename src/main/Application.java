@@ -76,13 +76,16 @@ public class Application {
                 .build();
 
         // Print the total number of squares
-        System.out.println("The main.board has been built with " + board.getNumSquares() + " squares.");
+        System.out.println("The board has been built with " + board.getNumSquares() + " squares. \n");
 
+        /*
         // Print a specific square to show an example
         System.out.print("Enter a square number to see the details: ");
         int squareNumber = scanner.nextInt();
         Square square = board.getSquareFromNumber(squareNumber);
         System.out.println("Square details: " + square);
+        */
+
 
         // DICE
         System.out.print("Do you want to play with 1 or 2 dice? ");
@@ -140,7 +143,7 @@ public class Application {
         Game game = new Game(nPlayers, nicknames, dice, board, strategy);
 
         // Start the main.game
-        System.out.println("The main.game begins!");
+        System.out.println("The game begins! \n");
         game.start();
 
         scanner.close();

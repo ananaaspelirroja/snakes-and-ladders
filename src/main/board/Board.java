@@ -31,16 +31,16 @@ public class Board {
         int position;
         int attempts = 0;
         int maxAttempts = board.getNumSquares(); // Limit the number of attempts
-        System.out.println("Maximum number of attempts to find an empty square: " + maxAttempts);
+        //System.out.println("Maximum number of attempts to find an empty square: " + maxAttempts); - DEBUG
         do {
             position = rand.nextInt(board.getNumSquares() - 1) + 1;  // Get a random position between 1 and the maximum number of squares
             attempts++;
             if (attempts > maxAttempts) {
                 throw new IllegalStateException("Unable to find an empty square after " + maxAttempts + " attempts.");
             }
-            System.out.println("Attempt " + attempts + ": square " + position);
+            //System.out.println("Attempt " + attempts + ": square " + position); - DEBUG
         } while (!(isSuitable(board, position))); // Repeat until finding a square with DoNothingEffect (i.e., an empty square)
-        System.out.println("Empty square found at position: " + position);
+        // System.out.println("Empty square found at position: " + position); - DEBUG
         return position;
     }
 
@@ -48,7 +48,7 @@ public class Board {
         Square square = board.getSquareFromNumber(position);  // Access square through the getter method
         // Check if the square has DoNothingEffect and is not a destination of a ladder or snake
         boolean isSuitable = (square.getEffect() instanceof DoNothingEffect) && (!square.isADestination());
-        System.out.println("Is square " + position + " suitable? " + isSuitable);
+        //System.out.println("Is square " + position + " suitable? " + isSuitable); - DEBUG
         return isSuitable;
     }
 
@@ -139,11 +139,12 @@ public class Board {
                     Square square = new Square(key, new DoNothingEffect());
                     board.grid.put(key, square);
 
-                    if (square.getEffect() != null) {
-                        System.out.println(square.getEffect().toString());  // Print the effect if not null
-                    } else {
-                        System.out.println("Null effect for square: " + key);
-                    }
+                    //DEBUG
+                    //if (square.getEffect() != null) {
+                    //    System.out.println(square.getEffect().toString());  // Print the effect if not null
+                    //} else {
+                    //    System.out.println("Null effect for square: " + key);
+                    //}
 
                     key++;
                 }
@@ -198,7 +199,7 @@ public class Board {
             // Add DrawACardEffect squares
             if(nDrawCardSquares > 0){
                 Deck deck = Deck.getInstance(otherCards);
-                System.out.println("Deck created with setting " + deck.getNoStoppingCard());
+                System.out.println("Deck created with setting " + deck.getNoStoppingCard() + "\n");
                 for (int i = 0; i < nDrawCardSquares; i++) {
                     int position = getRandomEmptySquare(board);
                     board.grid.put(position, new Square(position, new DrawACardEffect()));

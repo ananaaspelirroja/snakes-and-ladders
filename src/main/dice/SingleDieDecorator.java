@@ -18,6 +18,7 @@ public class SingleDieDecorator extends DiceDecorator {
     @Override
     public int roll(int position) {
         if (position <= upperBound && position >= lowerBound) {
+            System.out.println("You are almost at the end! It's time to roll 1 dice! \n");
             return (int) (Math.random() * 6) + 1;
         } else {
             return dice.roll(position);

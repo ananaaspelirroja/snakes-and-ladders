@@ -15,7 +15,7 @@ public class MoveEffect implements Effect {
     @Override
     public void applyEffect(Game game, Player player) {
         player.setCurrentPosition(destination);
-        System.out.println("Player " + player.getNickname() + " has to move to square " + destination.getNumber());
+        System.out.println("Player " + player.getNickname() + " has to move to square " + destination.getNumber() + "\n");
     }
 
     @Override

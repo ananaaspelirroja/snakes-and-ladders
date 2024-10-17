@@ -98,4 +98,7 @@ public class Player {
     } //for snakes and ladders
 
 
+    public void addLastDiceRoll(int number) {
+        this.diceRolls.addLast(number);
+    }
 }

@@ -56,7 +56,11 @@ public class Game {
         Player player = players.getFirst();  // Get the first player
         while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
-            System.out.println("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns.");
+            if(player.getTurnsToWait() > 0){
+                System.out.println("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns. \n");
+            } else {
+                System.out.println("Player " + player.getNickname() + " will play on the next turn! \n");
+            }
 
             // Add a delay to visualize the message
             Thread.sleep(2000);  // 2 seconds pause to give time to read the message
@@ -68,6 +72,7 @@ public class Game {
         return player;
     }
 
+
     public void turn(int number, Player player) {
         int newPosition = player.advanceOf(number);
         int totalSquares = board.getNumSquares();
@@ -77,16 +82,16 @@ public class Game {
             // Calculate the difference and make the player go back
             int excess = newPosition - totalSquares;
             newPosition = totalSquares - excess;
-            System.out.println("Player " + player.getNickname() + " has exceeded the end! Goes back " + excess + " squares.");
+            System.out.println("Player " + player.getNickname() + " has exceeded the end! Goes back " + excess + " squares. \n");
         }
 
         Square square = board.getSquareFromNumber(newPosition);
         player.getSquaresCrossed().addLast(square);
         if (newPosition == totalSquares) {
             this.terminated = true;
-            System.out.println("Player " + player.getNickname() + " has won!");
+            System.out.println("Player " + player.getNickname() + " has won! \n");
         } else {
-            System.out.println("Player " + player.getNickname() + " is on square number " + newPosition);
+            //System.out.println("Player " + player.getNickname() + " is on square number " + newPosition); - DEBUG
             square.applyEffect(this, player);
         }
     }
