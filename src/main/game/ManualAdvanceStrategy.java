@@ -21,7 +21,7 @@ public class ManualAdvanceStrategy implements AdvanceStrategy {
             } else if (input.equalsIgnoreCase("r")) {
                 int currentPosition = player.getCurrentPosition();
                 int number = game.getDice().roll(currentPosition);
-                player.addLastDiceRoll(number);
+                player.updateLastDiceRoll(number);
                 game.turn(number, player);
             } else {
                 System.out.println("Invalid command. Try again.");

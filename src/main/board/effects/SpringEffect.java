@@ -7,7 +7,7 @@ public class SpringEffect implements Effect {
 
     @Override
     public void applyEffect(Game game, Player player) {
-        int number = player.lastDiceRoll();
+        int number = player.getLastDiceRoll();
         game.turn(number, player);
         System.out.println("Player " + player.getNickname() + " got a real luck! It is moving again of " + number + " squares! \n");
     }
