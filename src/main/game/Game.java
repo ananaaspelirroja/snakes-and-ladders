@@ -107,4 +107,48 @@ public class Game {
     public void movePlayerToEnd() {
         players.addLast(players.removeFirst());
     }
+
+
+
+    public GameState saveConfiguration(){
+        return new GameState(this, nPlayers, players, dice, board, strategy);
+    }
+
+    public void restoreConfiguration(GameState configuration){
+        if (!(configuration instanceof GameState))
+            throw new IllegalArgumentException();
+
+        GameState gameState = (GameState) configuration;
+
+        if (this != gameState.getOriginator())
+            throw new IllegalArgumentException();
+
+
+    }
+
+    private class GameState{
+
+        private Game game;
+        private int nPlayers;
+        private LinkedList<Player> players;
+        private Dice dice;
+        private Board board;
+        private AdvanceStrategy strategy;
+
+
+        GameState(Game game, int nPlayers, LinkedList<Player> players, Dice dice, Board board, AdvanceStrategy strategy) {
+            this.game = game;
+            this.nPlayers = nPlayers;
+            this.players = players;
+            this.dice = dice;
+            this.board = board;
+            this.strategy = strategy;
+        }
+
+        Game getOriginator(){
+            return Game.this;
+        }
+
+
+    }
 }

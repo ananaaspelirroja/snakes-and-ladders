@@ -16,13 +16,13 @@ public class PlayerTest {
     @BeforeEach
     public void setUp() {
         board = new Board.Builder().build();
-        player = new Player(1, "TestPlayer", board);
+        player = new Player(1, "Anastasia", board);
     }
 
     @Test
     public void testPlayerInitialization() {
         assertEquals(1, player.getId());
-        assertEquals("TestPlayer", player.getNickname());
+        assertEquals("Anastasia", player.getNickname());
         assertEquals(0, player.getTurnsToWait());
         assertFalse(player.getHasANoStoppingCard());
     }
