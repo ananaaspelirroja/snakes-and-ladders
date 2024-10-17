@@ -39,7 +39,7 @@ public class Board {
                 throw new IllegalStateException("Unable to find an empty square after " + maxAttempts + " attempts.");
             }
             System.out.println("Attempt " + attempts + ": square " + position);
-        } while (!isSuitable(board, position)); // Repeat until finding a square with DoNothingEffect (i.e., an empty square)
+        } while (!(isSuitable(board, position))); // Repeat until finding a square with DoNothingEffect (i.e., an empty square)
         System.out.println("Empty square found at position: " + position);
         return position;
     }
@@ -108,7 +108,7 @@ public class Board {
         public Board build() {
             // Verify the size of the main.board
             if (nRows * nColumns < 9 || nRows * nColumns > 144) {
-                throw new IllegalArgumentException("The main.board must have between 9 and 144 squares.");
+                throw new IllegalArgumentException("The board must have between 9 and 144 squares.");
             }
 
             // Verify that there is enough space for ladders, snakes, bonus squares, rest squares, and draw card squares

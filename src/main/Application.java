@@ -95,7 +95,7 @@ public class Application {
             dice = new StandardDice(1);
         } else if (numDice == 2) {
             dice = new StandardDice(2);
-            System.out.println("You chose to play with 2 main.dice.");
+            System.out.println("You chose to play with dice.");
 
             // Ask if they want to enable "Double Six" mode or "One Dice At The End"
             System.out.print("Do you want to enable 'Double Six' mode (rolling a double six lets you roll again)? (y/n) ");

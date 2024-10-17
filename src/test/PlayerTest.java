@@ -26,6 +26,7 @@ public class PlayerTest {
         assertEquals(0, player.getTurnsToWait());
         assertFalse(player.getHasANoStoppingCard());
     }
+
     @Test
     public void testAdvanceOf() {
         int initialPosition = player.getCurrentPosition();
@@ -40,6 +41,6 @@ public class PlayerTest {
         player.setCurrentPosition(destination);
         assertEquals(5, player.getCurrentPosition());
     }
-
-
 }
+
+

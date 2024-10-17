@@ -52,8 +52,7 @@ public class Game {
     }
     */
 
-
-    Player getCurrentPlayer() throws InterruptedException {
+    public Player getCurrentPlayer() throws InterruptedException {
         Player player = players.getFirst();  // Get the first player
         while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
