@@ -8,9 +8,9 @@ public class DoubleSixDecorator extends DiceDecorator {
     @Override
     public int roll(int position) {
         int result = dice.roll(position);
-        if (result == 12) { // Controlla se la somma è 12 (doppio sei)
+        if (result == 12) {
             System.out.println("Doppio sei! Tira di nuovo.");
-            result = dice.roll(position); // Tira di nuovo i dadi
+            result = dice.roll(position);
         }
         return result;
     }

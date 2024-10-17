@@ -1,7 +1,6 @@
 package main;
 
 import main.board.Board;
-import main.board.Square;
 import main.dice.Dice;
 import main.dice.SingleDieDecorator;
 import main.dice.StandardDice;
@@ -19,6 +18,14 @@ public class Application {
     public static void main(String[] args) throws InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
+
+        //NEW GAME OR OLD CONFIG
+        System.out.print("Do you want to upload the last configuration? (y/n) ");
+        String oldConfig = scanner.next();
+        if(oldConfig.equalsIgnoreCase("y")) {
+
+        }
+
 
         // BOARD
         // Ask the user for the number of rows
@@ -78,7 +85,7 @@ public class Application {
         // Print the total number of squares
         System.out.println("The board has been built with " + board.getNumSquares() + " squares. \n");
 
-        /*
+        /* DEBUG
         // Print a specific square to show an example
         System.out.print("Enter a square number to see the details: ");
         int squareNumber = scanner.nextInt();
@@ -124,28 +131,32 @@ public class Application {
         String advance = scanner.next();
         if (advance.equalsIgnoreCase("m")) {
             strategy = new ManualAdvanceStrategy();
-        } else{
+        } else {
             strategy = new AutoAdvanceStrategy();
         }
 
         System.out.print("Enter the number of players: ");
         int nPlayers = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline
+        while (nPlayers < 2) {
+            System.out.print("Invalid number of players. There should be at least 2 players! ");
+            nPlayers = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline
 
-        // Enter the nicknames of the players
-        LinkedList<String> nicknames = new LinkedList<>();
-        for (int i = 0; i < nPlayers; i++) {
-            System.out.print("Enter the nickname of player " + (i + 1) + ": ");
-            String nickname = scanner.nextLine();
-            nicknames.add(nickname);
+            // Enter the nicknames of the players
+            LinkedList<String> nicknames = new LinkedList<>();
+            for (int i = 0; i < nPlayers; i++) {
+                System.out.print("Enter the nickname of player " + (i + 1) + ": ");
+                String nickname = scanner.nextLine();
+                nicknames.add(nickname);
+            }
+
+            Game game = new Game(nPlayers, nicknames, dice, board, strategy);
+
+            // Start the main.game
+            System.out.println("The game begins! \n");
+            game.start();
+
+            scanner.close();
         }
-
-        Game game = new Game(nPlayers, nicknames, dice, board, strategy);
-
-        // Start the main.game
-        System.out.println("The game begins! \n");
-        game.start();
-
-        scanner.close();
     }
 }

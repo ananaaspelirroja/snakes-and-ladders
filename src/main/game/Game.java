@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class Game {
 
-    private final int nPlayers;
+    private int nPlayers;
     private LinkedList<Player> players = new LinkedList<>();
     private Dice dice;
     private Board board;
@@ -32,37 +32,18 @@ public class Game {
             strategy.advance(this);
         }
     }
-/*
-    public void start() throws InterruptedException {
-        while (!terminated) {
-            Player player = getCurrentPlayer();  // Get the current player
-            int currentPosition = player.getCurrentPosition();
-            if (!player.hasTurnsToWait()) {  // Play only if the player does not have to wait
-                int number = dice.roll(currentPosition);  // Roll the main.dice
-                turn(number, player);  // Execute the turn
-            }
-            System.out.println(player.getSquaresCrossed());
 
-            // Add a delay to better visualize the messages
-            Thread.sleep(2000);  // 2 seconds pause between turns
-
-            // Move the player to the end of the list (end of the turn)
-            players.addLast(players.removeFirst());
-        }
-    }
-    */
 
     public Player getCurrentPlayer() throws InterruptedException {
         Player player = players.getFirst();  // Get the first player
         while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
-            if(player.getTurnsToWait() > 0){
+            if (player.getTurnsToWait() > 0) {
                 System.out.println("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns. \n");
             } else {
                 System.out.println("Player " + player.getNickname() + " will play on the next turn! \n");
             }
 
-            // Add a delay to visualize the message
             Thread.sleep(2000);  // 2 seconds pause to give time to read the message
 
             // Move the player to the end of the list to wait for the next turn
@@ -77,7 +58,6 @@ public class Game {
         int newPosition = player.advanceOf(number);
         int totalSquares = board.getNumSquares();
 
-        // Check if the new position exceeds the number of squares
         if (newPosition > totalSquares) {
             // Calculate the difference and make the player go back
             int excess = newPosition - totalSquares;
@@ -108,47 +88,46 @@ public class Game {
         players.addLast(players.removeFirst());
     }
 
+    //METODI PER MEMENTO
 
-
-    public GameState saveConfiguration(){
-        return new GameState(this, nPlayers, players, dice, board, strategy);
+    // Create and return the memento
+    public GameMemento getMemento() {
+        return new GameMemento();
     }
 
-    public void restoreConfiguration(GameState configuration){
-        if (!(configuration instanceof GameState))
-            throw new IllegalArgumentException();
-
-        GameState gameState = (GameState) configuration;
-
-        if (this != gameState.getOriginator())
-            throw new IllegalArgumentException();
-
-
-    }
-
-    private class GameState{
-
-        private Game game;
-        private int nPlayers;
-        private LinkedList<Player> players;
-        private Dice dice;
-        private Board board;
-        private AdvanceStrategy strategy;
-
-
-        GameState(Game game, int nPlayers, LinkedList<Player> players, Dice dice, Board board, AdvanceStrategy strategy) {
-            this.game = game;
-            this.nPlayers = nPlayers;
-            this.players = players;
-            this.dice = dice;
-            this.board = board;
-            this.strategy = strategy;
+    // Restore the game state from the memento
+    public void setMemento(GameMemento m) {
+        if (this != m.getOriginator()) {
+            throw new IllegalArgumentException("Memento does not belong to this game");
         }
 
-        Game getOriginator(){
+        this.nPlayers = nPlayers;
+        this.players = new LinkedList<>(m.players);
+        this.terminated = m.terminated;
+        this.strategy = m.strategy;
+
+        System.out.println("Game state restored!");
+    }
+
+    // Inner Memento class
+    private class GameMemento {
+
+        private final int nPlayers;
+        private final LinkedList<Player> players;
+        private final boolean terminated;
+        private final AdvanceStrategy strategy;
+
+
+        GameMemento() {
+            this.nPlayers = Game.this.nPlayers;
+            this.players = new LinkedList<>(Game.this.players);  // Save a copy of the players
+            this.terminated = Game.this.terminated;
+            this.strategy = Game.this.strategy;
+        }
+
+        // Get the originator (Game instance)
+        Game getOriginator() {
             return Game.this;
         }
-
-
     }
 }

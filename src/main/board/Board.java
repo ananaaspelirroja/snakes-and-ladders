@@ -239,4 +239,59 @@ public class Board {
         }
     }
 
+    //MEMENTO
+
+    public BoardMemento getMemento() {
+        return new BoardMemento();
+    }
+
+
+    public void setMemento(BoardMemento m) {
+        if (this != m.getOriginator()) {
+            throw new IllegalArgumentException("Memento does not belong to this board");
+        }
+
+        Builder builder = new Builder()
+                .nColumns(m.nColumns)
+                .nRows(m.nRows)
+                .nLadders(m.nLadders)
+                .nSnakes(m.nSnakes)
+                .nBonusSquares(m.nBonusSquares)
+                .nRestSquares(m.nRestSquares)
+                .nDrawCardSquares(m.nDrawCardSquares)
+                .otherCards(m.otherCards);
+
+        Board restoredBoard = builder.build();
+        System.out.println("Board state restored!");
+    }
+
+    // Classe Memento interna per salvare lo stato della board
+    private class BoardMemento {
+
+        private final int nColumns;
+        private final int nRows;
+        private final int nLadders;
+        private final int nSnakes;
+        private final int nBonusSquares;
+        private final int nRestSquares;
+        private final int nDrawCardSquares;
+        private final boolean otherCards;
+
+        // Costruttore del Memento che salva lo stato corrente della board
+        private BoardMemento() {
+            this.nColumns = Board.this.nColumns;
+            this.nRows = Board.this.nRows;
+            this.nLadders = Board.this.nLadders;
+            this.nSnakes = Board.this.nSnakes;
+            this.nBonusSquares = Board.this.nBonusSquares;
+            this.nRestSquares = Board.this.nRestSquares;
+            this.nDrawCardSquares = Board.this.nDrawCardSquares;
+            this.otherCards = Board.this.otherCards;
+        }
+
+        private Board getOriginator() {
+            return Board.this;
+        }
+    }
+
 }
