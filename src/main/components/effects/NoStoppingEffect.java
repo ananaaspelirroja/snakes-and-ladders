@@ -1,10 +1,12 @@
-package main.board.effects;
+package main.components.effects;
 
 
 import main.components.Player;
-import main.game.Game;
+import main.memento.Game;
 
-public class NoStoppingEffect implements Effect {
+import java.io.Serializable;
+
+public class NoStoppingEffect implements Effect, Serializable {
     @Override
     public void applyEffect(Game game, Player player) {
         player.setHasANoStoppingCard(true);

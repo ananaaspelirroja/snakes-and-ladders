@@ -1,18 +1,22 @@
-package main.board;
+package main.memento;
 
-import main.board.effects.DoNothingEffect;
-import main.board.effects.MoveEffect;
-import main.board.effects.ChanceEffect;
-import main.board.effects.SpringEffect;
-import main.board.effects.GuestEffect;
-import main.board.effects.BenchEffect;
-import main.board.effects.DrawACardEffect;
+import main.components.Deck;
+import main.components.Square;
+import main.components.effects.DoNothingEffect;
+import main.components.effects.MoveEffect;
+import main.components.effects.ChanceEffect;
+import main.components.effects.SpringEffect;
+import main.components.effects.GuestEffect;
+import main.components.effects.BenchEffect;
+import main.components.effects.DrawACardEffect;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Board {
+public class Board implements Serializable{
 
     private final int nColumns;
     private final int nRows;
@@ -241,15 +245,12 @@ public class Board {
 
     //MEMENTO
 
-    public BoardMemento getMemento() {
+    public BoardMemento save() {
         return new BoardMemento();
     }
 
 
-    public void setMemento(BoardMemento m) {
-        if (this != m.getOriginator()) {
-            throw new IllegalArgumentException("Memento does not belong to this board");
-        }
+    public void restore(BoardMemento m) {
 
         Builder builder = new Builder()
                 .nColumns(m.nColumns)
@@ -266,8 +267,9 @@ public class Board {
     }
 
     // Classe Memento interna per salvare lo stato della board
-    private class BoardMemento {
-
+    class BoardMemento implements Memento, Serializable {
+        @Serial
+        private static final long serialVersionUID = 987654321L;
         private final int nColumns;
         private final int nRows;
         private final int nLadders;
@@ -291,6 +293,37 @@ public class Board {
 
         private Board getOriginator() {
             return Board.this;
+        }
+        public int getNColumns() {
+            return nColumns;
+        }
+
+        public int getNRows() {
+            return nRows;
+        }
+
+        public int getNLadders() {
+            return nLadders;
+        }
+
+        public int getNSnakes() {
+            return nSnakes;
+        }
+
+        public int getNBonusSquares() {
+            return nBonusSquares;
+        }
+
+        public int getNRestSquares() {
+            return nRestSquares;
+        }
+
+        public int getNDrawCardSquares() {
+            return nDrawCardSquares;
+        }
+
+        public boolean isOtherCards() {
+            return otherCards;
         }
     }
 

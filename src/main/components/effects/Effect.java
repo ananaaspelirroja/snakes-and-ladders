@@ -1,6 +1,6 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.game.Game;
+import main.memento.Game;
 import main.components.Player;
 
 public interface Effect {  //Implementor of Bridge pattern

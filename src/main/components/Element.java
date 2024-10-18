@@ -1,10 +1,11 @@
-package main.board;
+package main.components;
 
-import main.board.effects.Effect;
-import main.components.Player;
-import main.game.Game;
+import main.components.effects.Effect;
+import main.memento.Game;
 
-public abstract class Element {
+import java.io.Serializable;
+
+public abstract class Element implements Serializable {
 
     protected int number;
     protected Effect effect;

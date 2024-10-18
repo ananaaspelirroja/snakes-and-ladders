@@ -1,6 +1,8 @@
-package main.board;
+package main.components;
 
-import main.board.effects.Effect;
+import main.components.effects.Effect;
+
+import java.io.Serializable;
 
 public class Square extends Element {
 

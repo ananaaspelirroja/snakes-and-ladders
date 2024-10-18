@@ -1,9 +1,11 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.game.Game;
+import main.memento.Game;
 import main.components.Player;
 
-public class SpringEffect implements Effect {
+import java.io.Serializable;
+
+public class SpringEffect implements Effect, Serializable {
 
     @Override
     public void applyEffect(Game game, Player player) {

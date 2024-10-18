@@ -1,10 +1,12 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.game.Game;
-import main.board.Deck;
+import main.memento.Game;
+import main.components.Deck;
 import main.components.Player;
 
-public class DrawACardEffect implements Effect {
+import java.io.Serializable;
+
+public class DrawACardEffect implements Effect, Serializable {
     // We use the Singleton
     protected Deck deck;
 

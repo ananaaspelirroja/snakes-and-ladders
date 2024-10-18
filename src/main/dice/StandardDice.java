@@ -1,6 +1,8 @@
 package main.dice;
 
-public class StandardDice implements Dice{
+import java.io.Serializable;
+
+public class StandardDice implements Dice, Serializable {
     private int numDice;
     private final int N_FACES = 6;
 

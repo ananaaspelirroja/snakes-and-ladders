@@ -1,8 +1,10 @@
 package main.dice;
 
-import main.board.Board;
+import main.memento.Board;
 
-public class SingleDieDecorator extends DiceDecorator {
+import java.io.Serializable;
+
+public class SingleDieDecorator extends DiceDecorator implements Serializable {
 
     private final int lowerBound;
     private final int upperBound;

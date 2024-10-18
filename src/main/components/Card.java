@@ -1,6 +1,6 @@
-package main.board;
+package main.components;
 
-import main.board.effects.Effect;
+import main.components.effects.Effect;
 
 public class Card extends Element {
 

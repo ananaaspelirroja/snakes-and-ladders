@@ -2,10 +2,10 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import main.board.Square;
+import main.components.Square;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import main.board.Board;
+import main.memento.Board;
 import main.components.Player;
 
 public class PlayerTest {

@@ -1,13 +1,13 @@
-package main.board;
+package main.components;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import main.board.effects.*;
-import main.components.Player;
-import main.game.Game;
+import main.components.effects.*;
+import main.memento.Game;
 
-public class Deck {
+public class Deck implements Serializable {
     private static Deck instance; // Singleton instance
     private Queue<Card> cards;  // Simulates cards as a queue
     private boolean noStoppingCard;

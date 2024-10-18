@@ -1,9 +1,12 @@
-package main.game;
+package main.strategy;
 
 import main.components.Player;
+import main.memento.Game;
+
+import java.io.Serializable;
 
 
-public class AutoAdvanceStrategy implements AdvanceStrategy {
+public class AutoAdvanceStrategy implements AdvanceStrategy, Serializable {
 
     @Override
     public void advance(Game game) throws InterruptedException {

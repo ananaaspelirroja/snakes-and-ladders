@@ -1,10 +1,12 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.board.Square;
-import main.game.Game;
+import main.components.Square;
+import main.memento.Game;
 import main.components.Player;
 
-public class MoveEffect implements Effect {
+import java.io.Serializable;
+
+public class MoveEffect implements Effect, Serializable {
 
     protected Square destination;
 

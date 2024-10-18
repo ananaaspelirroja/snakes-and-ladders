@@ -1,10 +1,12 @@
-package main.game;
+package main.strategy;
 
 import main.components.Player;
+import main.memento.Game;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class ManualAdvanceStrategy implements AdvanceStrategy {
+public class ManualAdvanceStrategy implements AdvanceStrategy{
     private Scanner scanner = new Scanner(System.in);
 
     @Override

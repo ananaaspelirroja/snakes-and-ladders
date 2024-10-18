@@ -1,6 +1,14 @@
-package main.dice;
+package main.memento;
 
-public class DiceConfiguration { //For Memento pattern
+import main.dice.Dice;
+import main.dice.DoubleSixDecorator;
+import main.dice.SingleDieDecorator;
+import main.dice.StandardDice;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+public class DiceConfiguration implements Serializable{ //For Memento pattern
 
     private final int numDice;
     private final boolean doubleSixEnabled;
@@ -18,23 +26,22 @@ public class DiceConfiguration { //For Memento pattern
     // MEMENTO IMPLEMENTATION
 
 
-    public DiceMemento getMemento() {
+    public DiceMemento save() {
         return new DiceMemento();
     }
 
 
-    public void setMemento(DiceMemento m) {
-        if (this != m.getOriginator()) {
-            throw new IllegalArgumentException("Memento does not belong to this dice configuration");
-        }
+    public void restore(DiceMemento m) {
 
         DiceConfiguration restoredDiceConfig = new DiceConfiguration(m.numDice, m.doubleSixEnabled, m.oneDiceAtEndEnabled);
         System.out.println("Dice configuration restored!");
     }
 
 
-    private class DiceMemento {
 
+    class DiceMemento implements Memento, Serializable {
+        @Serial
+        private static final long serialVersionUID = 1122334455L;
         private final int numDice;
         private final boolean doubleSixEnabled;
         private final boolean oneDiceAtEndEnabled;
@@ -44,6 +51,18 @@ public class DiceConfiguration { //For Memento pattern
             this.numDice = DiceConfiguration.this.numDice;
             this.doubleSixEnabled = DiceConfiguration.this.doubleSixEnabled;
             this.oneDiceAtEndEnabled = DiceConfiguration.this.oneDiceAtEndEnabled;
+        }
+
+        public int getNumDice() {
+            return numDice;
+        }
+
+        public boolean isDoubleSixEnabled() {
+            return doubleSixEnabled;
+        }
+
+        public boolean isOneDiceAtEndEnabled() {
+            return oneDiceAtEndEnabled;
         }
 
         private DiceConfiguration getOriginator() {

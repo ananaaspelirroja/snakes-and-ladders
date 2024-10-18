@@ -1,9 +1,11 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.game.Game;
+import main.memento.Game;
 import main.components.Player;
 
-public class ChanceEffect implements Effect {
+import java.io.Serializable;
+
+public class ChanceEffect implements Effect, Serializable {
 
     public ChanceEffect() {
     }

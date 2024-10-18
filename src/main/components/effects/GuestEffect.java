@@ -1,10 +1,12 @@
-package main.board.effects;
+package main.components.effects;
 
-import main.board.Deck;
-import main.game.Game;
+import main.components.Deck;
+import main.memento.Game;
 import main.components.Player;
 
-public class GuestEffect implements Effect {
+import java.io.Serializable;
+
+public class GuestEffect implements Effect, Serializable {
 
     public GuestEffect() {
     }

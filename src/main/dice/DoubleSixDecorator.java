@@ -1,6 +1,8 @@
 package main.dice;
 
-public class DoubleSixDecorator extends DiceDecorator {
+import java.io.Serializable;
+
+public class DoubleSixDecorator extends DiceDecorator implements Serializable {
     public DoubleSixDecorator(Dice dice){
         super(dice);
     }

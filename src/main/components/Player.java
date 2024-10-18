@@ -1,11 +1,11 @@
 package main.components;
 
-import main.board.Board;
-import main.board.Square;
+import main.memento.Board;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Player {
+public class Player implements Serializable {
 
     private int id;
     private String nickname;
