@@ -3,6 +3,7 @@ package main.memento;
 import main.components.Player;
 import main.components.Square;
 import main.dice.Dice;
+import main.gui.ApplicationGUI;
 import main.strategy.AdvanceStrategy;
 import main.strategy.AutoAdvanceStrategy;
 import main.strategy.ManualAdvanceStrategy;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 
 public class Game implements Serializable {
 
+
     private int nPlayers;
     private LinkedList<Player> players = new LinkedList<>();
     private LinkedList<String> playersNames;
@@ -21,8 +23,12 @@ public class Game implements Serializable {
     private boolean terminated = false;
     private boolean autoAdvance;
     private transient AdvanceStrategy strategy;
+    private transient ApplicationGUI gui;  // Riferimento alla GUI
+    @Serial
+    private static final long serialVersionUID = -8191144334487604245L;
 
-    public Game(int nPlayers, LinkedList<String> nicknames, Dice dice, Board board, boolean autoAdvance) {
+
+    public Game(int nPlayers, LinkedList<String> nicknames, Dice dice, Board board, boolean autoAdvance, ApplicationGUI gui) {
         this.board = board;
         this.nPlayers = nPlayers;
         this.playersNames = nicknames;
@@ -31,7 +37,10 @@ public class Game implements Serializable {
             players.addLast(player);
         }
         this.autoAdvance = autoAdvance;
+        // Debugging: stampa per verificare lo stato di autoAdvance
+        System.out.println("Auto Advance: " + autoAdvance);
         this.dice = dice;
+        this.gui = gui;
         if(autoAdvance){
             this.strategy = new AutoAdvanceStrategy();
         } else {
@@ -42,7 +51,7 @@ public class Game implements Serializable {
 
     public void start() throws InterruptedException {
         while (!terminated) {
-            strategy.advance(this);
+            strategy.advance(this, gui);
         }
     }
 
@@ -52,9 +61,9 @@ public class Game implements Serializable {
         while (player.hasTurnsToWait()) {  // If they need to wait, reduce the waiting turns
             player.setTurnsToWait(player.getTurnsToWait() - 1);
             if (player.getTurnsToWait() > 0) {
-                System.out.println("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns. \n");
+                gui.updateGameInfo("Player " + player.getNickname() + " has to wait " + player.getTurnsToWait() + " more turns.\n");
             } else {
-                System.out.println("Player " + player.getNickname() + " will play on the next turn! \n");
+                gui.updateGameInfo("Player " + player.getNickname() + " will play on the next turn! \n");
             }
 
             Thread.sleep(2000);  // 2 seconds pause to give time to read the message
@@ -75,14 +84,14 @@ public class Game implements Serializable {
             // Calculate the difference and make the player go back
             int excess = newPosition - totalSquares;
             newPosition = totalSquares - excess;
-            System.out.println("Player " + player.getNickname() + " has exceeded the end! Goes back " + excess + " squares. \n");
+            gui.updateGameInfo("Player " + player.getNickname() + " has exceeded the end! Goes back " + excess + " squares.\n");
         }
 
         Square square = board.getSquareFromNumber(newPosition);
         player.getSquaresCrossed().addLast(square);
         if (newPosition == totalSquares) {
             this.terminated = true;
-            System.out.println("Player " + player.getNickname() + " has won! \n");
+            gui.updateGameInfo("Player " + player.getNickname() + " has won!\n");
         } else {
             //System.out.println("Player " + player.getNickname() + " is on square number " + newPosition); - DEBUG
             square.applyEffect(this, player);
@@ -91,6 +100,10 @@ public class Game implements Serializable {
 
     public Dice getDice() {
         return this.dice;
+    }
+
+    public AdvanceStrategy getStrategy() {
+        return strategy;
     }
 
     public void terminate() {
@@ -131,6 +144,14 @@ public class Game implements Serializable {
         }
 
         System.out.println("Game state restored!");
+    }
+
+    public LinkedList<Player> getPlayers() {
+        return this.players;
+    }
+
+    public boolean isTerminated() {
+        return this.terminated;
     }
 
 

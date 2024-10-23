@@ -1,5 +1,6 @@
 package main;
 
+import main.gui.ApplicationGUI;
 import main.memento.Board;
 import main.dice.*;
 import main.memento.Caretaker;
@@ -13,15 +14,16 @@ public class Application {
     public static void main(String[] args) throws InterruptedException {
 
         LinkedList<String> playerNicknames = new LinkedList<>();
-        playerNicknames.add("Lorenzo");
+        playerNicknames.add("Hola mi amor");
         playerNicknames.add("Ciao");
         playerNicknames.add("Anas");
 
         Dice dice = new StandardDice(1);
 
         Board board = new Board.Builder().nColumns(12).nDrawCardSquares(10).nLadders(5).nLadders(3).otherCards(true).build();
-        DiceConfiguration diceConfig = new DiceConfiguration(2, false, false);
-        Game game = new Game(3, playerNicknames, dice, board, true);
+        DiceConfiguration diceConfig = new DiceConfiguration(2, false, false, board);
+        ApplicationGUI gui = new ApplicationGUI();
+        Game game = new Game(3, playerNicknames, dice, board, false, gui);
 
         Caretaker caretaker = new Caretaker();
 

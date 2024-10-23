@@ -1,5 +1,6 @@
 package main.dice;
 
+
 import java.io.Serializable;
 
 public class DoubleSixDecorator extends DiceDecorator implements Serializable {

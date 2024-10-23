@@ -26,6 +26,8 @@ public class Board implements Serializable{
     private final int nRestSquares;
     private final int nDrawCardSquares;  // New parameter for DrawACardEffect squares
     private final boolean otherCards;
+    @Serial
+    private static final long serialVersionUID = 6456379889023508602L;
 
     private Map<Integer, Square> grid;
 
@@ -54,6 +56,14 @@ public class Board implements Serializable{
         boolean isSuitable = (square.getEffect() instanceof DoNothingEffect) && (!square.isADestination());
         //System.out.println("Is square " + position + " suitable? " + isSuitable); - DEBUG
         return isSuitable;
+    }
+
+    public int getnRows() {
+        return this.nRows;
+    }
+
+    public int getnColumns() {
+        return this.nColumns;
     }
 
     public static class Builder {

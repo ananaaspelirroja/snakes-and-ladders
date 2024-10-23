@@ -57,7 +57,8 @@ public class Caretaker {
             DiceConfiguration restoredDiceConfig = new DiceConfiguration(
                     diceMemento.getNumDice(),
                     diceMemento.isDoubleSixEnabled(),
-                    diceMemento.isOneDiceAtEndEnabled()
+                    diceMemento.isOneDiceAtEndEnabled(),
+                    restoredBoard
             );
 
             Dice restoredDice = null;
@@ -76,6 +77,9 @@ public class Caretaker {
             // Ripristina il gioco utilizzando il memento e gli oggetti ricostruiti
             game.restore(gameMemento, restoredBoard, restoredDice);
 
+            // Assign the restored objects to the method's parameters
+            board = restoredBoard;
+            diceConfig = restoredDiceConfig;
             System.out.println("Restore completed with success!");
 
         } catch (IOException | ClassNotFoundException e) {

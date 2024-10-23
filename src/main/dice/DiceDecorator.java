@@ -1,8 +1,7 @@
 package main.dice;
 
-import java.io.Serializable;
 
-public abstract class DiceDecorator implements Dice, Serializable {
+public abstract class DiceDecorator implements Dice{
     protected Dice dice;
     public DiceDecorator(Dice dice) {
         this.dice = dice;

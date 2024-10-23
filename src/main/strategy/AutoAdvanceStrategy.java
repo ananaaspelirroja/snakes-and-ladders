@@ -1,6 +1,7 @@
 package main.strategy;
 
 import main.components.Player;
+import main.gui.ApplicationGUI;
 import main.memento.Game;
 
 import java.io.Serializable;
@@ -8,12 +9,15 @@ import java.io.Serializable;
 
 public class AutoAdvanceStrategy implements AdvanceStrategy, Serializable {
 
+
+
     @Override
-    public void advance(Game game) throws InterruptedException {
+    public void advance(Game game, ApplicationGUI gui) throws InterruptedException {
         Player player = game.getCurrentPlayer();
         if (!player.hasTurnsToWait()) {
             int currentPosition = player.getCurrentPosition();
             int number = game.getDice().roll(currentPosition);
+            gui.updateGameInfo("Player " + player.getNickname() + " rolled a " + number + "\n");
             player.updateLastDiceRoll(number);
             game.turn(number, player);
         }
