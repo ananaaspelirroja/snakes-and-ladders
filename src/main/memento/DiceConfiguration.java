@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 public class DiceConfiguration implements Serializable{ //For Memento pattern
 
-    private final int numDice;
-    private final boolean doubleSixEnabled;
-    private final boolean oneDiceAtEndEnabled;
+    private int numDice;
+    private boolean doubleSixEnabled;
+    private boolean oneDiceAtEndEnabled;
     private Board board;
     @Serial
     private static final long serialVersionUID = 8876296238589836171L;
@@ -36,10 +36,13 @@ public class DiceConfiguration implements Serializable{ //For Memento pattern
 
 
     public void restore(DiceMemento m) {
-
-        DiceConfiguration restoredDiceConfig = new DiceConfiguration(m.numDice, m.doubleSixEnabled, m.oneDiceAtEndEnabled, m.board);
+        this.numDice = m.numDice;
+        this.doubleSixEnabled = m.doubleSixEnabled;
+        this.oneDiceAtEndEnabled = m.oneDiceAtEndEnabled;
+        this.board = m.board;
         System.out.println("Dice configuration restored!");
     }
+
 
     public Dice createDice() {
         Dice dice = null;

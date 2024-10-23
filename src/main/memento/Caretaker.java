@@ -33,7 +33,7 @@ public class Caretaker {
         }
     }
 
-    public void undo(Game game, Board board, DiceConfiguration diceConfig) {
+    public void undo(Game game, Board[] board, DiceConfiguration[] diceConfig) {
         try (FileInputStream fileIn = new FileInputStream(path);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
@@ -42,7 +42,7 @@ public class Caretaker {
             Board.BoardMemento boardMemento = (Board.BoardMemento) in.readObject();
             DiceConfiguration.DiceMemento diceMemento = (DiceConfiguration.DiceMemento) in.readObject();
 
-            // Ripristina la board e la configurazione dei dadi
+            // Ricostruisci la board
             Board restoredBoard = new Board.Builder()
                     .nColumns(boardMemento.getNColumns())
                     .nRows(boardMemento.getNRows())
@@ -54,6 +54,7 @@ public class Caretaker {
                     .otherCards(boardMemento.isOtherCards())
                     .build();
 
+            // Ricostruisci la configurazione dei dadi
             DiceConfiguration restoredDiceConfig = new DiceConfiguration(
                     diceMemento.getNumDice(),
                     diceMemento.isDoubleSixEnabled(),
@@ -61,25 +62,15 @@ public class Caretaker {
                     restoredBoard
             );
 
-            Dice restoredDice = null;
-            if(diceMemento.getNumDice() == 1){
-                restoredDice = new StandardDice(1);
-            } else {
-                restoredDice = new StandardDice(1);
-                if(diceMemento.isDoubleSixEnabled()){
-                    restoredDice = new DoubleSixDecorator(restoredDice);
-                }
-                if(diceMemento.isOneDiceAtEndEnabled()){
-                    restoredDice = new SingleDieDecorator(restoredDice, restoredBoard);
-                }
-            }
+            // Ricrea il dado dalla configurazione ripristinata
+            Dice restoredDice = restoredDiceConfig.createDice();
 
-            // Ripristina il gioco utilizzando il memento e gli oggetti ricostruiti
+            // Ripristina lo stato del gioco utilizzando il memento
             game.restore(gameMemento, restoredBoard, restoredDice);
 
-            // Assign the restored objects to the method's parameters
-            board = restoredBoard;
-            diceConfig = restoredDiceConfig;
+            // Aggiorna i riferimenti passati
+            board[0] = restoredBoard;
+            diceConfig[0] = restoredDiceConfig;
             System.out.println("Restore completed with success!");
 
         } catch (IOException | ClassNotFoundException e) {
@@ -87,5 +78,8 @@ public class Caretaker {
         }
     }
 
-
 }
+
+
+
+

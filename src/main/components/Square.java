@@ -16,7 +16,7 @@ public class Square extends Element {
     }
 
     public void setIsADestination(boolean ADestination) {
-        isADestination = ADestination;
+        this.isADestination = ADestination;
     }
 
     public Effect getEffect() {

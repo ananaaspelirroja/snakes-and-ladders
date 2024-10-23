@@ -21,12 +21,13 @@ public class ApplicationGUI extends JFrame {
     private JTextArea gameInfoArea;  // Text area for displaying game information
     private BoardPanel boardPanel;
     private Game game;
+    private JPanel mainPanel;  // Nuovo pannello principale che contiene il tabellone e le informazioni
 
 
     public ApplicationGUI() {
         caretaker = new Caretaker();
         setTitle("Snakes and Ladders - Application");
-        setSize(600, 400);
+        setSize(800, 600);  // Maggiore spazio per includere il tabellone e le informazioni
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -39,7 +40,6 @@ public class ApplicationGUI extends JFrame {
         loadConfigButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement the logic to load configuration using Caretaker
                 loadConfiguration();
             }
         });
@@ -49,7 +49,6 @@ public class ApplicationGUI extends JFrame {
         newConfigButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Go to the new configuration setup panel
                 createNewConfiguration();
             }
         });
@@ -57,18 +56,22 @@ public class ApplicationGUI extends JFrame {
         buttonPanel.add(loadConfigButton);
         buttonPanel.add(newConfigButton);
 
-        // Add button panel to the frame
         add(buttonPanel, BorderLayout.NORTH);
 
-        // Create and add the game information area (JTextArea)
+        // Pannello principale che contiene il tabellone e la finestra delle informazioni
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        // Area di testo per le informazioni di gioco
         gameInfoArea = new JTextArea();
         gameInfoArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(gameInfoArea);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setPreferredSize(new Dimension(200, 600));  // Dimensione preferita per il pannello delle informazioni
 
-        // Initialize boardPanel (empty initially)
-        boardPanel = new BoardPanel(null, new LinkedList<>());
-        add(boardPanel, BorderLayout.CENTER);
+        // Aggiungi la finestra delle informazioni sul lato destro del pannello principale
+        mainPanel.add(scrollPane, BorderLayout.EAST);
+
+        add(mainPanel, BorderLayout.CENTER);  // Aggiungi il pannello principale al centro della finestra
     }
 
     // Method to update the game info area with new information
@@ -79,14 +82,16 @@ public class ApplicationGUI extends JFrame {
 
     private void loadConfiguration() {
         try {
-            Board restoredBoard = null;
-            DiceConfiguration restoredDiceConfig = null;
+            Board[] restoredBoard = new Board[1];  // Usa un array per passare per riferimento
+            DiceConfiguration[] restoredDiceConfig = new DiceConfiguration[1];  // Usa un array per passare per riferimento
 
             Game tempGame = new Game(0, new LinkedList<>(), null, null, false, this);
 
-            caretaker.undo(tempGame, restoredBoard, restoredDiceConfig);
+            // Prova a ripristinare la configurazione
+            caretaker.undo(tempGame, restoredBoard, restoredDiceConfig);  // Passa gli array per riferimento
 
-            if (restoredBoard != null && restoredDiceConfig != null && tempGame.getPlayers() != null) {
+            // Controlla che board e diceConfig siano correttamente ripristinati
+            if (restoredBoard[0] != null && restoredDiceConfig[0] != null && tempGame.getPlayers() != null) {
                 JOptionPane.showMessageDialog(this, "Configuration loaded successfully!");
 
                 boolean manualAdvance = false;
@@ -94,19 +99,24 @@ public class ApplicationGUI extends JFrame {
                         .map(Player::getNickname)
                         .collect(Collectors.toCollection(LinkedList::new));
 
-                startGame(restoredBoard, restoredDiceConfig, manualAdvance, playerNames);
+                // Avvia il gioco con i valori restaurati
+                startGame(restoredBoard[0], restoredDiceConfig[0], manualAdvance, playerNames);
 
-                // Forza l'aggiornamento del layout dopo il caricamento
+                System.out.println("Restored Board: " + restoredBoard[0]);
+                System.out.println("Restored Dice Configuration: " + restoredDiceConfig[0]);
+
                 revalidate();
                 repaint();
             } else {
-                throw new Exception("Failed to restore the game configuration!");
+                throw new Exception("Failed to restore the game configuration: Board or DiceConfiguration is null.");
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ex.printStackTrace();  // Stampa l'errore sulla console
             JOptionPane.showMessageDialog(this, "Failed to load configuration: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+
 
     private void createNewConfiguration() {
         JFrame configFrame = new JFrame("Create New Configuration");
@@ -144,25 +154,20 @@ public class ApplicationGUI extends JFrame {
         // Pannello per i nickname dei giocatori
         JPanel nicknamesPanel = new JPanel(new GridLayout(0, 2)); // Pannello per i nickname
 
-        // Quando l'utente inserisce il numero di giocatori, mostra i campi per i nickname
         playersField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int numPlayers = Integer.parseInt(playersField.getText());
-                nicknamesPanel.removeAll(); // Rimuovi eventuali campi precedenti
+                nicknamesPanel.removeAll();
 
-                // Aggiungi i nuovi campi per i nomi dei giocatori
                 for (int i = 1; i <= numPlayers; i++) {
                     nicknamesPanel.add(new JLabel("Player " + i + " Name:"));
                     JTextField playerNameField = new JTextField();
                     nicknamesPanel.add(playerNameField);
                 }
 
-                // Ridisegna il pannello per aggiornare i campi di input
                 nicknamesPanel.revalidate();
                 nicknamesPanel.repaint();
-
-                // Ridisegna anche la finestra principale
                 configFrame.revalidate();
                 configFrame.repaint();
             }
@@ -205,7 +210,41 @@ public class ApplicationGUI extends JFrame {
                         return;
                     }
 
-                    // Crea il board e il dice configuration
+                    if (numPlayers < 2) {
+                        JOptionPane.showMessageDialog(configFrame, "The players should be at least 2.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (numPlayers > 7) {
+                        JOptionPane.showMessageDialog(configFrame, "The players should be at most 6.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Controllo sugli input
+                    if (rows * columns < 9 || rows * columns > 144) {
+                        JOptionPane.showMessageDialog(configFrame, "The board must have between 9 and 144 squares.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    int maxLaddersAndSnakes = (rows * columns) / 2;
+                    if (ladders + snakes > maxLaddersAndSnakes) {
+                        JOptionPane.showMessageDialog(configFrame, "The total number of ladders and snakes exceeds the available limit.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    int totalSpecialSquares = bonusSquares + restSquares + drawCardSquares + 1;  // The final square is always a special square
+                    int availableSpaces = rows * columns - (ladders * 2 + snakes * 2);
+                    if (totalSpecialSquares > availableSpaces) {
+                        JOptionPane.showMessageDialog(configFrame, "The number of special squares exceeds the available space.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (otherCards && drawCardSquares == 0) {
+                        JOptionPane.showMessageDialog(configFrame, "Cannot enable other cards if there are no DrawACard squares.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Crea la board e il dice configuration
                     Board board = new Board.Builder()
                             .nRows(rows)
                             .nColumns(columns)
@@ -219,11 +258,10 @@ public class ApplicationGUI extends JFrame {
 
                     DiceConfiguration diceConfig = new DiceConfiguration(dice, doubleSix, oneDiceAtEnd, board);
 
-                    // Avvia il gioco con la configurazione
                     startGame(board, diceConfig, manualAdvance, playerNames);
-                    configFrame.dispose();  // Chiudi la finestra di configurazione
+                    configFrame.dispose();
                 } catch (NumberFormatException ex) {
-                    ex.printStackTrace();  // Stampa l'errore sulla console
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(configFrame, "Please fill out all fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -253,11 +291,11 @@ public class ApplicationGUI extends JFrame {
         panel.add(manualAdvanceCheckbox);
         panel.add(submitButton);
 
-        // Aggiungi il pannello dei nickname sotto il form principale
         configFrame.add(panel, BorderLayout.NORTH);
-        configFrame.add(new JScrollPane(nicknamesPanel), BorderLayout.CENTER);  // Pannello per i nickname
+        configFrame.add(new JScrollPane(nicknamesPanel), BorderLayout.CENTER);
         configFrame.setVisible(true);
     }
+
 
 
     private void startGame(Board board, DiceConfiguration diceConfig, boolean manualAdvance, LinkedList<String> playerNames) {
@@ -273,29 +311,25 @@ public class ApplicationGUI extends JFrame {
             return;
         }
 
-        // Crea il gioco
         game = new Game(playerNames.size(), playerNames, diceConfig.createDice(), board, !manualAdvance, this);
+        caretaker.makeBackup(game, board, diceConfig);
 
-        // Crea il pannello del tabellone
+        // Crea il pannello del tabellone e aggiungilo al pannello principale
         boardPanel = new BoardPanel(board, game.getPlayers());
+        mainPanel.add(boardPanel, BorderLayout.CENTER);  // Aggiungi il pannello del tabellone
 
-        // Rimuovi componenti precedenti e aggiungi il pannello del tabellone
-        getContentPane().removeAll();
-        add(boardPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
 
         if (manualAdvance) {
-            // Aggiungi pulsante per avanzamento manuale
             JButton advanceButton = new JButton("Avanza Turno");
             advanceButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Avanza solo un turno alla volta, non blocca il thread della GUI
                     new Thread(() -> {
                         try {
                             game.getStrategy().advance(game, ApplicationGUI.this);
-                            updateBoard(); // Aggiorna il tabellone dopo il turno
+                            updateBoard();
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
@@ -307,7 +341,6 @@ public class ApplicationGUI extends JFrame {
             revalidate();
             repaint();
         } else {
-            // Avvia il gioco automaticamente
             new Thread(() -> {
                 try {
                     while (!game.isTerminated()) {
@@ -322,19 +355,13 @@ public class ApplicationGUI extends JFrame {
         }
     }
 
-
-
     public void updateBoard() {
         if (boardPanel != null && game != null) {
-            // Aggiorna le posizioni dei giocatori e ridisegna il tabellone
             boardPanel.updatePlayerPositions(game.getPlayers());
-
-            // Forza l'aggiornamento del layout
             revalidate();
             repaint();
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

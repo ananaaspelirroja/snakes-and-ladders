@@ -32,30 +32,36 @@ public class Board implements Serializable{
     private Map<Integer, Square> grid;
 
     // Method that returns a random empty square
-    private static int getRandomEmptySquare(Board board) {
+    private static int getRandomEmptySquare(Board board, Map<Integer, Boolean> reservedDestinations) {
         Random rand = new Random();
-        int position;
+        int position = 0;
         int attempts = 0;
         int maxAttempts = board.getNumSquares(); // Limit the number of attempts
-        //System.out.println("Maximum number of attempts to find an empty square: " + maxAttempts); - DEBUG
-        do {
-            position = rand.nextInt(board.getNumSquares() - 1) + 1;  // Get a random position between 1 and the maximum number of squares
+
+        // Genera una posizione casuale finché non trovi una casella vuota o raggiungi il massimo tentativi
+        while (attempts < maxAttempts) {
+            position = rand.nextInt(board.getNumSquares() - 1) + 1;  // Ottieni una posizione casuale
             attempts++;
-            if (attempts > maxAttempts) {
-                throw new IllegalStateException("Unable to find an empty square after " + maxAttempts + " attempts.");
+
+            // Se la posizione è adatta, esci dal ciclo
+            if (isSuitable(board, position) && !reservedDestinations.containsKey(position)) {
+                break;
             }
-            //System.out.println("Attempt " + attempts + ": square " + position); - DEBUG
-        } while (!(isSuitable(board, position))); // Repeat until finding a square with DoNothingEffect (i.e., an empty square)
-        // System.out.println("Empty square found at position: " + position); - DEBUG
+        }
+
+        // Se non viene trovata una casella vuota entro il numero massimo di tentativi, lancia un'eccezione
+        if (attempts >= maxAttempts) {
+            throw new IllegalStateException("Unable to find an empty square after " + maxAttempts + " attempts.");
+        }
+
         return position;
     }
+
 
     private static boolean isSuitable(Board board, int position) {
         Square square = board.getSquareFromNumber(position);  // Access square through the getter method
         // Check if the square has DoNothingEffect and is not a destination of a ladder or snake
-        boolean isSuitable = (square.getEffect() instanceof DoNothingEffect) && (!square.isADestination());
-        //System.out.println("Is square " + position + " suitable? " + isSuitable); - DEBUG
-        return isSuitable;
+        return ((square.getEffect() instanceof DoNothingEffect) && (!square.isADestination()));
     }
 
     public int getnRows() {
@@ -67,6 +73,8 @@ public class Board implements Serializable{
     }
 
     public static class Builder {
+
+        Map<Integer, Boolean> reservedDestinations = new HashMap<>();
 
         private int nColumns = 10;
         private int nRows = 10;
@@ -153,60 +161,68 @@ public class Board implements Serializable{
                     Square square = new Square(key, new DoNothingEffect());
                     board.grid.put(key, square);
 
-                    //DEBUG
-                    //if (square.getEffect() != null) {
-                    //    System.out.println(square.getEffect().toString());  // Print the effect if not null
-                    //} else {
-                    //    System.out.println("Null effect for square: " + key);
-                    //}
-
                     key++;
                 }
             }
 
-            // Add ladders
+            // Aggiungi scale
             for (int i = 0; i < nLadders; i++) {
-                int start = getRandomEmptySquare(board);  // Get an empty square
-                int end = getRandomEmptySquare(board);    // Get a second empty square for the ladder end
+                int start = getRandomEmptySquare(board, reservedDestinations);  // Get an empty square
+                int end = getRandomEmptySquare(board, reservedDestinations);    // Get a second empty square for the ladder end
                 while (end <= start) {                    // The end square must be after the start square
-                    end = getRandomEmptySquare(board);
+                    end = getRandomEmptySquare(board, reservedDestinations);
                 }
                 Square endSquare = new Square(end, new DoNothingEffect());
                 endSquare.setIsADestination(true);
                 board.grid.put(start, new Square(start, new MoveEffect(endSquare)));
+
+                // Aggiungi la destinazione alle caselle riservate
+                reservedDestinations.put(end, true);
+
+                System.out.println("Ladder from square " + start + " to " + end);
             }
 
-            // Add snakes
+            // Aggiungi serpenti
             for (int i = 0; i < nSnakes; i++) {
-                int start = getRandomEmptySquare(board);  // Get an empty square
-                int end = getRandomEmptySquare(board);    // Get a second empty square for the snake end
+                int start = getRandomEmptySquare(board, reservedDestinations);  // Get an empty square
+                int end = getRandomEmptySquare(board, reservedDestinations);    // Get a second empty square for the snake end
                 while (end >= start) {                    // The end square must be before the start square
-                    end = getRandomEmptySquare(board);
+                    end = getRandomEmptySquare(board, reservedDestinations);
                 }
                 Square endSquare = new Square(end, new DoNothingEffect());
                 endSquare.setIsADestination(true);
                 board.grid.put(start, new Square(start, new MoveEffect(endSquare)));
+
+                // Aggiungi la destinazione alle caselle riservate
+                reservedDestinations.put(end, true);
+
+                System.out.println("Snake from square " + start + " to " + end);
             }
 
-            // Add bonus squares (ChanceEffect, SpringEffect)
+            // Aggiungi caselle bonus, riposo, ecc.
             for (int i = 0; i < nBonusSquares; i++) {
-                int position = getRandomEmptySquare(board);
-                // Alternate between ChanceEffect and SpringEffect
+                int position = getRandomEmptySquare(board, reservedDestinations);
                 if (i % 2 == 0) {
                     board.grid.put(position, new Square(position, new ChanceEffect()));
+                    System.out.println("Bonus square (ChanceEffect) at position " + position);
                 } else {
                     board.grid.put(position, new Square(position, new SpringEffect()));
+                    System.out.println("Bonus square (SpringEffect) at position " + position);
                 }
             }
 
             // Add rest squares (GuestEffect, BenchEffect)
             for (int i = 0; i < nRestSquares; i++) {
-                int position = getRandomEmptySquare(board);
+                int position = getRandomEmptySquare(board, reservedDestinations);
                 // Alternate between GuestEffect and BenchEffect
                 if (i % 2 == 0) {
                     board.grid.put(position, new Square(position, new GuestEffect()));
+                    // Linea di debug per mostrare le caselle di riposo
+                    System.out.println("Rest square (GuestEffect) at position " + position);
                 } else {
                     board.grid.put(position, new Square(position, new BenchEffect()));
+                    // Linea di debug per mostrare le caselle di riposo
+                    System.out.println("Rest square (BenchEffect) at position " + position);
                 }
             }
 
@@ -215,8 +231,10 @@ public class Board implements Serializable{
                 Deck deck = Deck.getInstance(otherCards);
                 System.out.println("Deck created with setting " + deck.getNoStoppingCard() + "\n");
                 for (int i = 0; i < nDrawCardSquares; i++) {
-                    int position = getRandomEmptySquare(board);
+                    int position = getRandomEmptySquare(board, reservedDestinations);
                     board.grid.put(position, new Square(position, new DrawACardEffect()));
+                    // Linea di debug per mostrare le caselle con DrawACardEffect
+                    System.out.println("Draw Card square at position " + position);
                 }
             }
 

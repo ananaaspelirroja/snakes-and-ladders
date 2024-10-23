@@ -32,8 +32,8 @@ public class Application {
         //System.out.println("Configuration saved \n");
 
         //TO RESTORE OLD CONFIG
-        caretaker.undo(game, board, diceConfig);
-        System.out.println("Configuration saved \n");
+        //caretaker.undo(game, board, diceConfig);
+        //(System.out.println("Configuration saved \n");
 
 
         System.out.println("The game begins! \n");

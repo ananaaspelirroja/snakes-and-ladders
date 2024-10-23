@@ -4,11 +4,14 @@ import main.components.Square;
 import main.memento.Game;
 import main.components.Player;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class MoveEffect implements Effect, Serializable {
 
     protected Square destination;
+    @Serial
+    private static final long serialVersionUID = 2831748455936354658L;
 
     public MoveEffect(Square destination) {
         this.destination = destination;
@@ -25,5 +28,9 @@ public class MoveEffect implements Effect, Serializable {
         return "MoveEffect{" +
                 "destination=" + destination +
                 '}';
+    }
+
+    public Square getDestination() {
+        return destination;
     }
 }
