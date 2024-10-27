@@ -171,7 +171,7 @@ public class BoardPanel extends JPanel {
         } else if (square.getEffect() instanceof BenchEffect) {
             return "Bench";
         } else if (square.getEffect() instanceof DrawACardEffect) {
-            return "Draw Card";
+            return "Draw a Card";
         } else {
             return String.valueOf(square.getNumber());
         }

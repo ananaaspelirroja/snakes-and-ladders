@@ -140,13 +140,76 @@ public class ApplicationGUI extends JFrame {
         JTextField restSquaresField = new JTextField();
         JLabel drawCardSquaresLabel = new JLabel("Number of Draw Card Squares:");
         JTextField drawCardSquaresField = new JTextField();
-        JCheckBox otherCardsCheckbox = new JCheckBox("Enable Other Cards");
 
         JLabel diceLabel = new JLabel("Number of Dice:");
         JTextField diceField = new JTextField();
 
+        // Creiamo i checkbox ma non li aggiungiamo inizialmente al pannello
         JCheckBox doubleSixCheckbox = new JCheckBox("Enable Double Six Rule");
         JCheckBox oneDiceAtEndCheckbox = new JCheckBox("Enable One Dice At The End Rule");
+        JCheckBox otherCardsCheckbox = new JCheckBox("Enable Other Cards");
+
+        // Listener per abilitare/disabilitare le opzioni dei dadi
+        diceField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int dice = Integer.parseInt(diceField.getText());
+                    boolean enableSpecialDiceRules = dice > 1;
+
+                    // Aggiunge o rimuove le opzioni in base al valore del dado
+                    if (enableSpecialDiceRules) {
+                        if (!panel.isAncestorOf(doubleSixCheckbox)) {
+                            panel.add(doubleSixCheckbox);
+                            panel.add(oneDiceAtEndCheckbox);
+                        }
+                    } else {
+                        panel.remove(doubleSixCheckbox);
+                        panel.remove(oneDiceAtEndCheckbox);
+                    }
+
+                    configFrame.revalidate();
+                    configFrame.repaint();
+
+                } catch (NumberFormatException ex) {
+                    // In caso di valore non valido rimuove le opzioni
+                    panel.remove(doubleSixCheckbox);
+                    panel.remove(oneDiceAtEndCheckbox);
+                    configFrame.revalidate();
+                    configFrame.repaint();
+                }
+            }
+        });
+
+        // Listener per abilitare/disabilitare l'opzione "Enable Other Cards"
+        drawCardSquaresField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int drawCardSquares = Integer.parseInt(drawCardSquaresField.getText());
+                    boolean enableOtherCards = drawCardSquares > 0;
+
+                    // Aggiunge o rimuove l'opzione delle altre carte
+                    if (enableOtherCards) {
+                        if (!panel.isAncestorOf(otherCardsCheckbox)) {
+                            panel.add(otherCardsCheckbox);
+                        }
+                    } else {
+                        panel.remove(otherCardsCheckbox);
+                    }
+
+                    configFrame.revalidate();
+                    configFrame.repaint();
+
+                } catch (NumberFormatException ex) {
+                    // In caso di valore non valido rimuove l'opzione
+                    panel.remove(otherCardsCheckbox);
+                    configFrame.revalidate();
+                    configFrame.repaint();
+                }
+            }
+        });
+
 
         JLabel playersLabel = new JLabel("Number of Players:");
         JTextField playersField = new JTextField();
@@ -281,11 +344,8 @@ public class ApplicationGUI extends JFrame {
         panel.add(restSquaresField);
         panel.add(drawCardSquaresLabel);
         panel.add(drawCardSquaresField);
-        panel.add(otherCardsCheckbox);
         panel.add(diceLabel);
         panel.add(diceField);
-        panel.add(doubleSixCheckbox);
-        panel.add(oneDiceAtEndCheckbox);
         panel.add(playersLabel);
         panel.add(playersField);
         panel.add(manualAdvanceCheckbox);

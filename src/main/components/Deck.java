@@ -20,7 +20,7 @@ public class Deck implements Serializable {
         initializeDeck();
     }
 
-    public static Deck getInstance(boolean noStoppingCard) {
+    public static synchronized Deck getInstance(boolean noStoppingCard) {
         if (instance == null) {
             instance = new Deck(noStoppingCard);  // Initialize only on the first call
         }
@@ -28,7 +28,7 @@ public class Deck implements Serializable {
     }
 
     // Method to get the existing Singleton instance
-    public static Deck getInstance() {
+    public static synchronized Deck getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Deck not initialized. Call getInstance(boolean noStoppingCard) first.");
         }

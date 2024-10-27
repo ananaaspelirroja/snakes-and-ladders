@@ -1,10 +1,6 @@
 package main.memento;
 
 import main.dice.Dice;
-import main.dice.DoubleSixDecorator;
-import main.dice.SingleDieDecorator;
-import main.dice.StandardDice;
-
 import java.io.*;
 
 public class Caretaker {

@@ -13,7 +13,4 @@ public class Card extends Element {
                 "effect=" + effect.toString() +
                 '}';
     }
-    public Effect getEffect() {
-        return effect;
-    }
 }
