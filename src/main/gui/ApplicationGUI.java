@@ -21,13 +21,13 @@ public class ApplicationGUI extends JFrame {
     private JTextArea gameInfoArea;  // Text area for displaying game information
     private BoardPanel boardPanel;
     private Game game;
-    private JPanel mainPanel;  // Nuovo pannello principale che contiene il tabellone e le informazioni
+    private JPanel mainPanel;
 
 
     public ApplicationGUI() {
         caretaker = new Caretaker();
         setTitle("Snakes and Ladders - Application");
-        setSize(800, 600);  // Maggiore spazio per includere il tabellone e le informazioni
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -58,17 +58,14 @@ public class ApplicationGUI extends JFrame {
 
         add(buttonPanel, BorderLayout.NORTH);
 
-        // Pannello principale che contiene il tabellone e la finestra delle informazioni
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // Area di testo per le informazioni di gioco
         gameInfoArea = new JTextArea();
         gameInfoArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(gameInfoArea);
-        scrollPane.setPreferredSize(new Dimension(200, 600));  // Dimensione preferita per il pannello delle informazioni
+        scrollPane.setPreferredSize(new Dimension(200, 600));
 
-        // Aggiungi la finestra delle informazioni sul lato destro del pannello principale
         mainPanel.add(scrollPane, BorderLayout.EAST);
 
         add(mainPanel, BorderLayout.CENTER);  // Aggiungi il pannello principale al centro della finestra
@@ -83,24 +80,24 @@ public class ApplicationGUI extends JFrame {
     private void loadConfiguration() {
         try {
             Board[] restoredBoard = new Board[1];  // Usa un array per passare per riferimento
-            DiceConfiguration[] restoredDiceConfig = new DiceConfiguration[1];  // Usa un array per passare per riferimento
+            DiceConfiguration[] restoredDiceConfig = new DiceConfiguration[1];
 
             Game tempGame = new Game(0, new LinkedList<>(), null, null, false, this);
 
-            // Prova a ripristinare la configurazione
-            caretaker.undo(tempGame, restoredBoard, restoredDiceConfig);  // Passa gli array per riferimento
+
+            caretaker.undo(tempGame, restoredBoard, restoredDiceConfig);
 
             // Controlla che board e diceConfig siano correttamente ripristinati
             if (restoredBoard[0] != null && restoredDiceConfig[0] != null && tempGame.getPlayers() != null) {
                 JOptionPane.showMessageDialog(this, "Configuration loaded successfully!");
 
-                // Recupera il valore di manualAdvance dal gioco salvato
+
                 boolean manualAdvance = !tempGame.isAutoAdvance();  // Inverti per ottenere il valore manuale
                 LinkedList<String> playerNames = tempGame.getPlayers().stream()
                         .map(Player::getNickname)
                         .collect(Collectors.toCollection(LinkedList::new));
 
-                // Avvia il gioco con i valori restaurati, incluso manualAdvance corretto
+
                 startGame(restoredBoard[0], restoredDiceConfig[0], manualAdvance, playerNames);
 
                 System.out.println("Restored Board: " + restoredBoard[0]);
@@ -113,7 +110,7 @@ public class ApplicationGUI extends JFrame {
                 throw new Exception("Failed to restore the game configuration: Board or DiceConfiguration is null.");
             }
         } catch (Exception ex) {
-            ex.printStackTrace();  // Stampa l'errore sulla console
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to load configuration: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -147,12 +144,12 @@ public class ApplicationGUI extends JFrame {
         JLabel diceLabel = new JLabel("Number of Dice:");
         JTextField diceField = new JTextField();
 
-        // Checkbox avanzati per le regole speciali
+
         JCheckBox doubleSixCheckbox = new JCheckBox("Enable Double Six Rule");
         JCheckBox oneDiceAtEndCheckbox = new JCheckBox("Enable One Dice At The End Rule");
         JCheckBox otherCardsCheckbox = new JCheckBox("Enable Other Cards");
 
-        // Inizialmente disabilita le opzioni avanzate
+
         doubleSixCheckbox.setEnabled(false);
         oneDiceAtEndCheckbox.setEnabled(false);
         otherCardsCheckbox.setEnabled(false);
@@ -173,7 +170,7 @@ public class ApplicationGUI extends JFrame {
             }
         });
 
-        // Listener per abilitare/disabilitare l'opzione "Enable Other Cards" in base a Draw Card Squares
+        // Listener per abilitare/disabilitare l'opzione "Enable Other Cards" in base alle Draw a Card Squares
         drawCardSquaresField.addActionListener(e -> {
             try {
                 int drawCardSquares = Integer.parseInt(drawCardSquaresField.getText());
@@ -331,7 +328,7 @@ public class ApplicationGUI extends JFrame {
         game = new Game(playerNames.size(), playerNames, diceConfig.createDice(), board, !manualAdvance, this);
         caretaker.makeBackup(game, board, diceConfig);
 
-        // Crea il pannello del tabellone e aggiungilo al pannello principale
+
         boardPanel = new BoardPanel(board, game.getPlayers());
         mainPanel.add(boardPanel, BorderLayout.CENTER);  // Aggiungi il pannello del tabellone
 

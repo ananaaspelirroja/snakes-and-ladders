@@ -14,7 +14,6 @@ public class Deck implements Serializable {
     private boolean noStoppingCard;
 
     // Private constructor for Singleton
-    // Private constructor to prevent external instantiation
     private Deck(boolean noStoppingCard) {
         this.noStoppingCard = noStoppingCard;
         this.cards = new LinkedList<>();

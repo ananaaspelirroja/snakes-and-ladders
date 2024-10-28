@@ -2,6 +2,7 @@ package main.components;
 
 import main.memento.Board;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -14,6 +15,8 @@ public class Player implements Serializable {
     private LinkedList<Square> squaresCrossed = new LinkedList<>();
     private int lastDiceRoll = 0;
     private Board board;
+    @Serial
+    private static final long serialVersionUID = -3535632860350669133L;
 
     public Player(int id, String nickname, Board board) {
         this.id = id;
@@ -31,10 +34,6 @@ public class Player implements Serializable {
 
     public String getNickname() {
         return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public int getTurnsToWait() {
