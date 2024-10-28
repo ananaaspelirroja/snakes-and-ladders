@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import main.components.effects.*;
+import main.gui.ApplicationGUI;
 import main.memento.Game;
 
 public class Deck implements Serializable {

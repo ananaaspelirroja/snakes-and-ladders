@@ -110,6 +110,10 @@ public class Game implements Serializable {
         this.terminated = true;
     }
 
+    public boolean isAutoAdvance() {
+        return autoAdvance;
+    }
+
     public void movePlayerToEnd() {
         players.addLast(players.removeFirst());
     }
